@@ -1,0 +1,214 @@
+body {
+  background-color: #CED8F6;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+h1, h2, p, ul, li {
+  font-family: sans-serif;
+}
+.main-header {
+  background-color: #111;
+  padding: 0;
+  margin: 0;
+}
+ul.menu {
+  text-align: right;
+}
+ul.menu li {
+  display: inline;
+  list-style-type: none;
+  margin: 0;
+}
+ul.menu li:first-child {
+  font-size: 24px;
+  float: left;
+}
+ul.menu li:first-child a {
+  padding: 14px;
+}
+ul.menu {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 0;
+}
+ul.menu li a {
+  color: #FFF;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 20px;
+  display: inline-block;
+}
+.main-content {
+  background-color: inherit;
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px 0;
+  flex-grow: 1;
+}
+.main-content h2 {
+  padding: 0;
+  margin: 0;
+}
+.main-content li {
+  margin-bottom: 10px;
+}
+footer {
+  width: 80%;
+  color: #000;
+  border-top: 1px solid #000;
+  margin: 0 auto;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+/* Register form
+ * https://www.w3schools.com/howto/howto_css_register_form.asp
+ */
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  /* position: relative; */
+}
+
+.flex-container * {
+  box-sizing: border-box
+}
+.flex-container .help-container,
+.flex-container .login-container,
+.flex-container .signup-container {
+  width: 404px;
+  margin: 0 auto;
+}
+
+.help-container a {
+  color: black;
+  text-decoration: none;
+}
+
+.formsection {
+  /* position: relative; */
+  z-index: 1;
+  background-color: #FFFFFF;
+  margin: 48px auto 0 auto;
+  width: 404px;
+  text-align: center;
+  color: #888c90;
+  height: 515px;
+  overflow: hidden;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -khtml-user-select: text;
+  -ms-user-select: text;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+.formsection h1 {
+  margin: 50px 0 25px 0;
+  color: #000;
+}
+.formsection p {
+  margin: 10px 0;
+}
+.formsection .form-label {
+  font-size: 12px;
+  text-align: left;
+  padding: 0 40px;
+}
+.formsection .form-label:after {
+  content: ' *';
+  color: #CF081E;
+}
+
+.formsection input.form-input {
+  font-size: 16px;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 2px;
+  width: 80%;
+  margin: 0 auto 8px auto;
+  padding: 0 12px;
+  height: 28px;
+  color: #4A5456;
+}
+
+.flex-container input::placeholder {
+  color: #000;
+}
+/* Full-width input fields */
+/* .container.signup input[type=text], 
+.container.signup input[type=password],
+.container.login input[type=text], 
+.container.login input[type=password] {
+  width: 80%;
+  padding: 5px;
+  margin: 5px 0 10px 0;
+  display: inline-block;
+  border-width: 0;
+  border-bottom: 1px solid black !important;
+  background: #fff;
+  color: #000;
+} */
+
+.signup-container input[type=text]:focus, 
+.signup-container input[type=password]:focus,
+.login-container input[type=text]:focus, 
+.login-container input[type=password]:focus {
+  outline: none;
+}
+
+.signup-options.m-10{
+  margin-bottom: 10px;
+}
+
+.signup-options label {
+  font-size: 12px;
+}
+
+.signup-options input[type=radio]{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.login-separator {
+  width: calc(100% - 98px);
+  height: 1px;
+  margin: 22px 12px 22px 48px;
+  border-top: 1px solid rgba(136, 140, 144, 0.6);
+}
+.separator-title {
+  display: inline-block;
+  position: relative;
+  top: -15px;
+  width: 48px;
+  height: 24px;
+  background-color: white;
+  font-size: 20px;
+}
+
+/* Set a style for the submit/register button */
+.btn {
+  background-color: black;
+  color: white;
+  padding: 12px 10px;
+  margin: 8px 0;
+  border-radius: 4px;
+  border: 1px solid black;
+  cursor: pointer;
+  width: 80%;
+  opacity: 0.9;
+}
+.btn.loginwith {
+  background-color: white;
+  color: black;
+}
+.btn:hover {
+  opacity:1;
+}
