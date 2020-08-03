@@ -1,68 +1,62 @@
 import React from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import useForm from '../hooks/useForm';
 
-class Signup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleGenderChange = this.handleGenderChange.bind(this);
+function Signup(props) {
+  const history = useHistory();
+  const registerUser = async () => {
+    try {
+      const response = await axios.post('/signup', inputs);
+      props.onSubmit(response.data);
+      history.push('/');
+    } catch(e) {
+      console.log(e);
+    }
   }
-
-  handleInputChange({ target: { name, value }}) {
-    this.props.onSignUpInputChange(name, value)
-  }
-
-  handleGenderChange(event) {
-    this.props.onGenderChange(event.target.value)
-  }
-
-  render() {
-    const { firstname, lastname, email, password, birthday, gender } = this.props.user;
-    return (
-      <div className="main">
-        <div className="flex-container">
-          <div className="signup-container">
-            <form onSubmit={this.props.onSignUpSubmit} className="formsection">
-              <h1>Social Network</h1>
-              <p>Please fill in this form to create an account.</p>
-              <div className="form-label">First name</div>
-              <input className="form-input" type="text" name="firstname" 
-                  value={firstname} onChange={this.handleInputChange} required/>
-              <div className="form-label">Last name</div>
-              <input className="form-input" type="text" name="lastname" 
-                  value={lastname} onChange={this.handleInputChange} required/>
-              <div className="form-label">Email address</div>
-              <input className="form-input" type="text" name="email" 
-                  value={email} onChange={this.handleInputChange} required/>
-              <div className="form-label">Password</div>
-              <input className="form-input" type="password" name="password" 
-                  value={password} onChange={this.handleInputChange} required/>
-              <div className="signup-options">
-                <div className="form-label">Date of birth</div>
-                <input className="form-input" type="date" name="birthday" id="birthday" 
-                    value={birthday} onChange={this.handleInputChange} required/>
-              </div>
-              <div className="signup-options m-10">
-                <div className="form-label">Gender</div>
-                <input type="radio" id="male" name="gender" value="male" 
-                  checked={gender === "male"} onChange={this.handleGenderChange} />
-                <label>Male</label>
-                <input type="radio" id="female" name="gender" value="female"
-                  checked={gender === "female"} onChange={this.handleGenderChange} />
-                <label>Female</label>
-                <input type="radio" id="other" name="gender" value="other"
-                  checked={gender === "other"} onChange={this.handleGenderChange} />
-                <label>Other</label>
-              </div>
-              <button type="submit" className="btn">Sign Up</button>
-            </form>
+  const {inputs, handleInputChange, handleSubmit} = useForm({firstname: '', lastname: '', email: '', password: '', birthday: '', gender: ''}, registerUser);
+  return (
+    <div className="flex-container">
+      <div className="signup-container">
+        <form onSubmit={handleSubmit} className="formsection">
+          <h1>Social Network</h1>
+          <p>Please fill in this form to create an account.</p>
+          <div className="form-label">First name</div>
+          <input className="form-input" type="text" name="firstname" 
+              value={inputs.firstname} onChange={handleInputChange} required/>
+          <div className="form-label">Last name</div>
+          <input className="form-input" type="text" name="lastname" 
+              value={inputs.lastname} onChange={handleInputChange} required/>
+          <div className="form-label">Email address</div>
+          <input className="form-input" type="text" name="email" 
+              value={inputs.email} onChange={handleInputChange} required/>
+          <div className="form-label">Password</div>
+          <input className="form-input" type="password" name="password" 
+              value={inputs.password} onChange={handleInputChange} required/>
+          <div className="signup-options">
+            <div className="form-label">Date of birth</div>
+            <input className="form-input" type="date" name="birthday"
+                value={inputs.birthday} onChange={handleInputChange} required/>
           </div>
-          <div className="help-container">
-            <p><a href="/login">Already have an account? Log In.</a></p>
+          <div className="signup-options m-10">
+            <div className="form-label">Gender</div>
+            <input type="radio" name="gender" value="male" 
+              checked={inputs.gender === "male"} onChange={handleInputChange} />
+            <label>Male</label>
+            <input type="radio" name="gender" value="female"
+              checked={inputs.gender === "female"} onChange={handleInputChange} />
+            <label>Female</label>
+            <input type="radio" name="gender" value="other"
+              checked={inputs.gender === "other"} onChange={handleInputChange} />
+            <label>Other</label>
           </div>
-        </div>
+          <button type="submit" className="btn">Sign Up</button>
+        </form>
       </div>
-    );
-  }
+      <div className="help-container">
+        <p><a href="/login">Already have an account? Log In.</a></p>
+      </div>
+    </div>
+  );
 }
- 
 export default Signup;
