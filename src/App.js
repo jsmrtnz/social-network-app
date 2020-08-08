@@ -10,16 +10,14 @@ import axios from 'axios';
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Footer from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
 
 import { ReactComponent as UserIcon } from './icons/user.svg';
 import { ReactComponent as UsersIcon } from './icons/users.svg';
 import { ReactComponent as CaretIcon } from './icons/caret.svg';
 import { ReactComponent as LogoutIcon } from './icons/logout.svg';
-import { ReactComponent as EditIcon } from './icons/edit.svg';
 import { ReactComponent as CogIcon } from './icons/cog.svg';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 
 const initialState = {
   isAuth: false,
@@ -70,7 +68,7 @@ class App extends React.Component {
       console.log(e);
     }
   }
-  componentWillMount(){
+  componentDidMount(){
     const validateCookie = async () => {
       try {
         const response = await axios.get('/validate_cookie');
@@ -96,7 +94,7 @@ class App extends React.Component {
           { isAuth && 
             <Navbar>
               <span className="navbar-title">
-                <NavLink to="/">Social Network</NavLink>
+                <NavLink to="/" className='link'>Social Network</NavLink>
               </span>
               <NavItem icon={<UserIcon />} text={user.firstname} />
               <NavItem text={"Home"} />
@@ -122,7 +120,6 @@ class App extends React.Component {
               </PrivateRoute>
             </Switch>
           </div>
-          { isAuth && <Footer />}
         </div>
       </BrowserRouter>
     );
@@ -142,7 +139,7 @@ function NavItem(props) {
 
   return (
     <li className="nav-item">
-      <a href="#" className="link-item" onClick={() => setOpen(!open)}>
+      <a href="#" className="link" onClick={() => setOpen(!open)}>
         {props.icon && <span className="icon-button">{props.icon}</span>}
         {props.text}
       </a>
@@ -163,7 +160,7 @@ function DropdownMenu(props) {
     );
   }
   return (
-    <div className="dropdown" > 
+    <div className="nav-dropdown" > 
       <div className="menu">
         <DropdownItem
           leftIcon={<CogIcon />}>

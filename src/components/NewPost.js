@@ -8,7 +8,10 @@ function NewPost(props) {
   });
   const newPost = async () => {
     try {
-      const response = await axios.post('/posts', inputs);
+      const data = new FormData();
+      data.append('content', inputs.content);
+      data.append('post', inputs.post);
+      const response = await axios.post('/posts', data);
       // , { headers: {
       //   'Authorization': 'Bearer ' + props.token
       // }}
@@ -18,14 +21,14 @@ function NewPost(props) {
       console.log(e);
     }
   }
-  const {inputs, handleInputChange, handleSubmit, clearInputs} = useForm({content: '', imgPost: 'Add Photo'}, newPost);
+  const {inputs, handleInputChange, handleSubmit, clearInputs} = useForm({content: '', imgLabel: 'Add Photo'}, newPost);
   return (
-    <div className="post">
+    <div className="new-post">
       <form className="post-form" onSubmit={handleSubmit}>
         <textarea className="post-textarea" placeholder={"What's on your mind, " + props.user.firstname +"?"} name="content" value={inputs.content} onChange={handleInputChange}></textarea>
         <div className="post-inputs">
-          <input className="input-file" type="file" id="fileToUpload" name="imgPost" onChange={handleInputChange}/>
-          <label htmlFor="fileToUpload">{inputs.imgPost}</label>
+          <input className="input-file" type="file" id="fileToUpload" name="post" onChange={handleInputChange}/>
+          <label htmlFor="fileToUpload">{inputs.imgLabel}</label>
           <input className="post-submit" type="submit" value="Post" name="submit"/>
         </div>
       </form>

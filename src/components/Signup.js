@@ -38,7 +38,7 @@ function Signup(props) {
             <input className="form-input" type="date" name="birthday"
                 value={inputs.birthday} onChange={handleInputChange} required/>
           </div>
-          <div className="signup-options m-10">
+          <div className="signup-options m-14">
             <div className="form-label">Gender</div>
             <input type="radio" name="gender" value="male" 
               checked={inputs.gender === "male"} onChange={handleInputChange} />

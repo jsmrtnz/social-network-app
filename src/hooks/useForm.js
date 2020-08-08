@@ -10,11 +10,11 @@ const useForm = (initialValues, callback) => {
   }
   const handleInputChange = (event) => {
     event.persist();
-    // let value = event.target.name === 'imgPost'
-    //   ? event.target.files[0].name 
-    //   : event.target.value
-    // setInputs(inputs => ({...inputs, [event.target.name]: value }))
-    setInputs(inputs => ({...inputs, [event.target.name]: event.target.value }))
+    let value = event.target.name === 'post'
+      ? event.target.files[0]
+      : event.target.value
+    setInputs(inputs => ({...inputs, [event.target.name]: value }))
+    // setInputs(inputs => ({...inputs, [event.target.name]: event.target.value }))
   }
   const clearInputs = () => {
     setInputs(initialValues);

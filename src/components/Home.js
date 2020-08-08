@@ -7,38 +7,19 @@ import {
 import PrivateRoute from './PrivateRoute';
 import Profile from './Profile';
 import FindFriends from './FindFriends';
+import FriendRequest from './FriendRequest';
 import Settings from './Settings';
-import NewPost from "./NewPost";
 import Timeline from "./Timeline";
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      postsArray: []
-    }
-    this.handleUpdateTimeline = this.handleUpdateTimeline.bind(this);
-    this.handleSubmitPost = this.handleSubmitPost.bind(this);
-  }
-  handleUpdateTimeline(data){
-    this.setState({
-      postsArray: data
-    })
-  }
-  handleSubmitPost(data){
-    this.setState({
-      ...this.state.postsArray.unshift(data)
-    })
-  }
   render() {
     const isAuth = this.props.isAuth;
-    const postsArray = this.state.postsArray;
     return (
-      <div className="flex-container">
+      <div className='home'>
         <Switch>
           <PrivateRoute exact path="/" isAuth={isAuth}>
-            <NewPost {...this.props} onSubmitPost={this.handleSubmitPost}/>
-            <Timeline postsArray={postsArray} onUpdateTimeline={this.handleUpdateTimeline}/>
+            <Timeline user={this.props.user} />
+            <FriendRequest user={this.props.user} />
           </PrivateRoute>
           <PrivateRoute path="/profile" isAuth={isAuth}>
             <Profile/>

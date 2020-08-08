@@ -1,16 +1,19 @@
 import React from 'react';
+import axios from 'axios';
 
-class FindFriends extends React.Component {
-  render() {
-    return (
-      <div>
-        <h2>GOT QUESTIONS?</h2>
-        <p>The easiest thing to do is post on
-        our <a href="http://forum.kirupa.com">forums</a>.
-        </p>
-      </div>
-    );
-  }
+function FindFriends(props) {
+  
+  return (
+    <div>
+      <h2>Find your friends</h2>
+      {/* {postsArray.map((post) => (
+          <User key={post._id} user={this.props.user} {...post} 
+            onLike={this.handleLike} 
+            onUpdate={this.handleUpdatePost}
+            onDelete={this.handleDeletePost} />
+        ))} */}
+    </div>
+  );
 }
  
 export default FindFriends;
