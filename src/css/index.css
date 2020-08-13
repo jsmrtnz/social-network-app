@@ -54,14 +54,15 @@ footer {
 .navbar {
   height: var(--nav-size);
   background-color: var(--bg);
-  padding: 0 5rem;
+  padding: 0;
   border-bottom: var(--border);
 }
 
 /* <ul> */
 .navbar-nav {
-  max-width: 100%;
+  max-width: 80%;
   height: 100%;
+  margin: 0 auto;
   display: flex;
   justify-content: flex-end;
   position: relative;
@@ -279,42 +280,43 @@ textarea {
   flex-direction: row;
 }
 .timeline {
-  flex: 5 1 80%;
+  flex: 1 1 64%;
   margin: 10px 0; 
 }
-.fr {
-  flex: 0 1 20%;
-  margin: 10px 0 0 auto;
+.sidebar {
+  flex: 0 1 36%;
+  margin: 10px 0 0 0;
 }
-.ui.card, .ui.cards>.card {
+/*  .ui.cards>.card */
+.sidebar .ui.card {
   width: 200px;
 }
-
-.fr .ui.card .content {
+.sidebar .ui.card .content {
   padding: 7px;
 }
-.fr .ui.card .content.requests>.header {
+.sidebar .ui.card .content.requests>.header {
   font-size: 14px;
 }
-.fr .ui.card > .content>.header {
+.sidebar .ui.card>.content>.header {
   font-size: 12px;
 }
-.fr .two.buttons {
-  margin-top: 5px;
+.sidebar .buttons {
+  margin-top: 7px;
 }
-.fr .two.buttons>.button {
-  background-color: var(--color-thi);
+.sidebar .buttons>.button {
+  background-color: var(--bg-comm);
   padding: 4px 6px;
   font-size: 12px;
   font-weight: normal;
   color: var(--color-pri);
   border-radius: var(--border-radius);
+  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.3);
 }
-.fr .two.buttons>.button:hover {
+.sidebar .buttons>.button:hover {
   background-color: var(--text-color);
   color: #000;
 }
-.fr .ui.card>.content>.description {
+.sidebar .ui.card>.content>.description {
   font-size: 12px;
   color: var(--color-sec);
 }
@@ -354,11 +356,13 @@ textarea {
   background-color: #242526;
   color: #dadce1;
   border: none;
+  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.3);
 }
 .new-post .input-file + label {
-  background-color: var(--color-thi);
+  background-color: var(--bg-comm);
   margin-right: 10px;
   color: var(--color-pri);
+  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.3);
 }
 .post-submit,
 .new-post .input-file + label {
@@ -412,6 +416,9 @@ textarea {
 .post .card>.contrast {
   background-color: var(--bg-comm);
 }
+.post .card>.content.contrast {
+  padding: 7px;
+}
 .disabled {
   pointer-events: none;
 }
@@ -423,6 +430,7 @@ textarea {
   background-color: lightskyblue !important;
   border-radius: 50%;
   margin-bottom: 0;
+  margin-right: 0.6em;
 }
 .ui.button.comment {
   background: #fff;
@@ -430,4 +438,11 @@ textarea {
 .ui.form input[type=text],
 .ui.input>.input.comment {
   border: none;
+}
+.users {
+  margin-top: 10px;
+}
+.users .ui.card {
+  width: 614px;
+  margin: 0 auto;
 }

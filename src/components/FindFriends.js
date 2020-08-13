@@ -1,17 +1,31 @@
 import React from 'react';
-import axios from 'axios';
+import { Button, Card, Image } from 'semantic-ui-react'
 
 function FindFriends(props) {
   
   return (
-    <div>
-      <h2>Find your friends</h2>
-      {/* {postsArray.map((post) => (
-          <User key={post._id} user={this.props.user} {...post} 
-            onLike={this.handleLike} 
-            onUpdate={this.handleUpdatePost}
-            onDelete={this.handleDeletePost} />
-        ))} */}
+    <div className="users">
+      <Card>
+        <Card.Content>
+          <Card.Header>People you may know</Card.Header>
+        </Card.Content>
+      </Card>
+      {/* {friends.map((friend) => (
+        <Card.Content key={friend._id}>
+          <Image
+            floated='left'
+            size='mini'
+            className='bg-avatar'
+            src={friend.avatar 
+            ? _arrayBufferToUrl(friend.avatar.data) 
+            : (friend.gender === "male" ? '/img/man.png' : '/img/woman.png')}
+          />
+          <Card.Header>{friend.firstname} {friend.lastname}</Card.Header>
+          <div className='buttons'>
+            <Button compact floated='right' size='mini' color='grey' content='Add friend' />
+          </div>
+        </Card.Content>
+      ))} */}
     </div>
   );
 }

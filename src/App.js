@@ -2,14 +2,17 @@ import React from 'react';
 import { 
   Route,
   BrowserRouter,
-  NavLink,
   Switch,
-  Redirect
+  Redirect,
+  Link
 } from 'react-router-dom';
 import axios from 'axios';
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Profile from './components/Profile';
+import FindFriends from './components/FindFriends';
+import Settings from './components/Settings';
 import PrivateRoute from './components/PrivateRoute';
 
 import { ReactComponent as UserIcon } from './icons/user.svg';
@@ -26,11 +29,10 @@ const initialState = {
     firstname: '',
     lastname: '',
     email: '',
-    password: '',
     birthday: '',
-    gender: ''
-  },
-  newPost: ''
+    gender: '',
+    friends: []
+  }
 }
 
 class App extends React.Component {
@@ -38,7 +40,6 @@ class App extends React.Component {
     super(props)
     this.state = initialState;
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSubmitPost = this.handleSubmitPost.bind(this);
     this.resetState = this.resetState.bind(this);
   }
   resetState() {
@@ -54,12 +55,6 @@ class App extends React.Component {
       user: data.user,
     });
   }
-  handleSubmitPost(data) {
-    this.setState({
-      ...this.state,
-      newPost: data
-    });
-  }
   handleLogOut = async () => {
     try {
       const response = await axios.post('/logout');
@@ -69,7 +64,7 @@ class App extends React.Component {
     }
   }
   componentDidMount(){
-    const validateCookie = async () => {
+    (async () => {
       try {
         const response = await axios.get('/validate_cookie');
         if(response){
@@ -83,8 +78,7 @@ class App extends React.Component {
       } catch(e) {
         console.log(e);
       }
-    };
-    validateCookie();
+    })();
   }
   render() {
     const {isAuth, user } = this.state;
@@ -94,12 +88,12 @@ class App extends React.Component {
           { isAuth && 
             <Navbar>
               <span className="navbar-title">
-                <NavLink to="/" className='link'>Social Network</NavLink>
+                <Link to="/" className='link'>Social Network</Link>
               </span>
-              <NavItem icon={<UserIcon />} text={user.firstname} />
-              <NavItem text={"Home"} />
-              <NavItem icon={<UsersIcon />} />
-              <NavItem icon={<CaretIcon />}>
+              <NavItem icon={<UserIcon />} text={user.firstname} to="/profile" />
+              <NavItem text={"Home"} to="/" />
+              <NavItem icon={<UsersIcon/>}  to="/findfriends" />
+              <NavItem icon={<CaretIcon/>} to="">
                 <DropdownMenu user={user} onLogOut={this.handleLogOut}/>
               </NavItem>
             </Navbar>
@@ -113,11 +107,23 @@ class App extends React.Component {
                 render={() => <Signup onSubmit={this.handleSubmit}/>}
               />
               <PrivateRoute exact path="/" isAuth={isAuth}>
-                <Home {...this.state} onSubmitPost={this.handleSubmitPost}/>
-              </PrivateRoute>
-              <PrivateRoute path="*" isAuth={isAuth}>
                 <Home {...this.state}/>
               </PrivateRoute>
+              <PrivateRoute path="/profile" isAuth={isAuth}>
+                <Profile/>
+              </PrivateRoute>
+              <PrivateRoute path="/findfriends" isAuth={isAuth}>
+                <FindFriends/>
+              </PrivateRoute>
+              <PrivateRoute path="/settings" isAuth={isAuth}>
+                <Settings/>
+              </PrivateRoute>
+              <Route path="*" >
+                <div>
+                  <p>Page not found!</p>
+                  <Link to="/">Return home</Link>
+                </div> 
+              </Route>
             </Switch>
           </div>
         </div>
@@ -139,10 +145,14 @@ function NavItem(props) {
 
   return (
     <li className="nav-item">
-      <a href="#" className="link" onClick={() => setOpen(!open)}>
+      {/* <a href="" className="link" onClick={() => setOpen(!open)}>
         {props.icon && <span className="icon-button">{props.icon}</span>}
         {props.text}
-      </a>
+      </a> */}
+      <Link to={props.to} className="link" onClick={() => setOpen(!open)}>
+        {props.icon && <span className="icon-button">{props.icon}</span>}
+        {props.text}
+      </Link>
       {open && props.children}
     </li>
   );

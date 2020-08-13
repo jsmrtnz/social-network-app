@@ -53,21 +53,26 @@ function Post(props) {
     inputRef.current.focus();
   }
   const {inputs, handleInputChange} = useForm({ content: props.content });
-  const user = props.user;
+
+  function isObject(obj) {
+    return obj === Object(obj);
+  }
+  const user = isObject(props.owner) ? props.owner : props.user;
   return (
-    <div className="post" key={props._id}>
+    <div className="post">
       <Card fluid>
-        <Dropdown icon='ellipsis vertical' direction='left'>
-          <Dropdown.Menu>
-            <Dropdown.Item text='Edit' onClick={handleInputUpdate} />
-            <Dropdown.Item text='Delete' onClick={handleDeletePost} />
-          </Dropdown.Menu>
-        </Dropdown>
+        {user._id === props.user._id &&
+          <Dropdown icon='ellipsis vertical' direction='left'>
+            <Dropdown.Menu>
+              <Dropdown.Item text='Edit' onClick={handleInputUpdate} />
+              <Dropdown.Item text='Delete' onClick={handleDeletePost} />
+            </Dropdown.Menu>
+          </Dropdown>
+        }
         <Card.Content>
           <Image 
             floated='left'
             size='mini'
-            // src='https://react.semantic-ui.com/images/avatar/large/matthew.png' 
             className='bg-avatar'
             src={user.avatar 
               ? _arrayBufferToUrl(user.avatar.data) 

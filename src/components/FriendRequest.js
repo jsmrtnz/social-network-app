@@ -1,42 +1,35 @@
 import React from 'react';
-import { Button, Card, Image, Container, Divider } from 'semantic-ui-react'
+import { Button, Card, Image } from 'semantic-ui-react'
+import axios from 'axios';
 import {_arrayBufferToUrl} from '../js/utils';
 
-import Footer from './Footer';
-
-function FriendRequest (props) {
-  const user = props.user;
+function FriendRequest(props) {
+  const handleResponse = async (res) => {
+    try {
+      await axios.delete(`/fr?id=${props._id}&v=${res}`);
+      props.onResponse(props._id);
+    } catch (e) {
+      console.log(e);
+    }
+  }
   return (
-    <div className='fr'>
-      <Card>
-        <Card.Content className='requests'>
-          <Card.Header>Friend Requests</Card.Header>
-        </Card.Content>
-        <Card.Content>
-          <Image
-            floated='left'
-            size='mini'
-            // src='https://react.semantic-ui.com/images/avatar/large/steve.jpg'
-            className='bg-avatar'
-            src={user.avatar 
-            ? _arrayBufferToUrl(user.avatar.data) 
-            : (user.gender === "male" ? '/img/man.png' : '/img/woman.png')}
-          />
-          <Card.Header>Steve Sanders</Card.Header>
-          <div className='two buttons'>
-            <Button compact floated='right' size='mini' color='grey' content='Decline' />
-            <Button compact floated='right' size='mini' color='grey' content='Accept' />
-          </div>
-        </Card.Content>
-        <Card.Content>
-          <Card.Description>No friends requests... That's ok. Try <a href='#'>finding friends</a>.</Card.Description>
-        </Card.Content>
-        <Card.Content className='requests'>
-          <Card.Header>People you may know</Card.Header>
-        </Card.Content>
-      </Card>
-      <Footer />
-    </div>
+    <Card.Content>
+      <Image
+        floated='left'
+        size='mini'
+        className='bg-avatar'
+        src={props.user.avatar 
+        ? _arrayBufferToUrl(props.user.avatar.data) 
+        : (props.user.gender === "male" ? '/img/man.png' : '/img/woman.png')}
+      />
+      <Card.Header>{props.user.firstname} {props.user.lastname}</Card.Header>
+      <div className='buttons'>
+        <Button compact floated='right' size='mini' content='Decline' 
+          onClick={() => handleResponse('declined')} />
+        <Button compact floated='right' size='mini' content='Accept' 
+          onClick={() => handleResponse('accepted')} />
+      </div>
+    </Card.Content>
   );
 }
 

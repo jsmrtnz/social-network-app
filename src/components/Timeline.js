@@ -42,11 +42,17 @@ class Timeline extends React.Component {
   componentDidMount() {
     const fetchData = async () => {
       try {
+        let data = [];
         const response = await axios.get('/timeline');
         // , { headers: {
         //   'Authorization': 'Bearer ' + props.token
         // }}
-        this.setState({ postsArray: response.data });
+        for (const post of response.data) {
+          let user = await axios.get(`/user/meta?id=${post.owner}`)
+          data.push({...post, ...{owner: user.data}})
+        }
+        this.setState({ postsArray: data });
+        // this.setState({ postsArray: response.data });
       } catch(e) {
         console.log(e);
       }
