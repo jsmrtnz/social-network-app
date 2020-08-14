@@ -22,13 +22,13 @@ function Login(props) {
           <h1>Social Network</h1>
           <div className="form-label">Email</div>
           <input className="form-input" type="text" name="email"
-                value={inputs.email} onChange={handleInputChange} required/>
+            value={inputs.email} onChange={handleInputChange} required/>
           <div className="form-label">Password</div>
           <input className="form-input" type="password" name="password" 
-                value={inputs.password} onChange={handleInputChange} required/>
+            value={inputs.password} onChange={handleInputChange} required/>
           <button type="submit" className="btn">Login</button>
           <div className="login-separator">
-              <span className="separator-title">OR</span>
+            <span className="separator-title">OR</span>
           </div>
           <button type="submit" className="btn loginwith">Login with Facebook</button>
           <button type="submit" className="btn loginwith">Login with Github</button>

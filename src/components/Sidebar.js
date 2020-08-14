@@ -1,54 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button, Card, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import {_arrayBufferToUrl} from '../js/utils';
-import FriendRequest from './FriendRequest';
-import Footer from './Footer';
+import { _arrayBufferToUrl } from '../utils/helpers';
+import { FriendRequest, Footer } from './index';
 
 function SideBar (props) {
   
-  const [frs, setFrs] = useState([]);
-  const [friends, setFriends] = useState([]);
+  // const [requests, setRequests] = useState([]);
+  // const [users, setUsers] = useState([]);
 
-  useEffect(() => {
+  // useEffect(() => {
     // Get friend requests
-    (async () => {
-      try {
-        const response = await axios.get('/fr');
-        for (const fr of response.data) {
-          let user = await axios.get(`/user/meta?id=${fr.from}`)
-          setFrs(frs => [...frs, {_id: fr._id, user: user.data}])
-        };
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-    // Find people you may know
-    (async () => {
-      try {
-        const response = await axios.get('/users?limit=5&skip=0');
-        setFriends(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  },[]);
+    // (async () => {
+    //   try {
+    //     const response = await axios.get('/fr');
+    //     for (const request of response.data) {
+    //       let user = await axios.get(`/user/meta?id=${request.from}`)
+    //       setRequests(requests => [...requests, {_id: request._id, user: user.data}])
+    //     };
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // })();
+    // // Find people you may know
+    // (async () => {
+    //   try {
+    //     const response = await axios.get('/users?limit=5&skip=0');
+    //     setUsers(response.data);
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // })();
+  // },[]);
   
-  const handleResponseFr = (id) => {
-    setFrs(frs => frs.filter(fr => fr._id != id))
+  const handleFriendRequest = (id) => {
+    // setRequests(requests => requests.filter(request => request._id != id))
+    const { requests } = props.user;
+    props.onUpdateRequests(requests.filter(request => request._id != id))
   }
-
+  const handleAddFriend = async (id) => {
+    try {
+      const response = await axios.post(`/fr?id=${id}`);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  const { user, users } = props;
   return (
     <div className='sidebar'>
       <Card>
         <Card.Content className='requests'>
           <Card.Header>Friend Requests</Card.Header>
         </Card.Content>
-        {frs.map((fr) => (
-          <FriendRequest key={fr._id} {...fr} onResponse={handleResponseFr} />
+        {user.requests.map((request) => (
+          <FriendRequest key={request._id} {...request} onResponse={handleFriendRequest} />
         ))}
-        {frs.length === 0 &&
+        {user.requests.length === 0 &&
           <Card.Content>
             <Card.Description>
               No friends requests... That's ok. Try <Link to="/findfriends">finding friends</Link>.
@@ -58,19 +66,20 @@ function SideBar (props) {
         <Card.Content className='requests'>
           <Card.Header>People you may know</Card.Header>
         </Card.Content>
-        {friends.map((friend) => (
-          <Card.Content key={friend._id}>
+        {users.map((user) => (
+          <Card.Content key={user._id}>
             <Image
               floated='left'
               size='mini'
               className='bg-avatar'
-              src={friend.avatar 
-              ? _arrayBufferToUrl(friend.avatar.data) 
-              : (friend.gender === "male" ? '/img/man.png' : '/img/woman.png')}
+              src={user.avatar 
+              ? _arrayBufferToUrl(user.avatar.data) 
+              : (user.gender === "male" ? '/img/man.png' : '/img/woman.png')}
             />
-            <Card.Header>{friend.firstname} {friend.lastname}</Card.Header>
+            <Card.Header>{user.firstname} {user.lastname}</Card.Header>
             <div className='buttons'>
-              <Button compact floated='right' size='mini' color='grey' content='Add friend' />
+              <Button compact floated='right' size='mini' color='grey' content='Add friend' 
+                onClick={() => handleAddFriend(user._id)} />
             </div>
           </Card.Content>
         ))}

@@ -1,26 +1,13 @@
-import React from 'react';
-import { 
-  Route,
-  BrowserRouter,
-  Switch,
-  Redirect,
-  Link
-} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Route, BrowserRouter, Switch, Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
-import Home from './components/Home';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import Profile from './components/Profile';
-import FindFriends from './components/FindFriends';
-import Settings from './components/Settings';
-import PrivateRoute from './components/PrivateRoute';
+import { Home, Login, Signup, Profile, FindFriends, Settings, PrivateRoute } from './components/index';
 
 import { ReactComponent as UserIcon } from './icons/user.svg';
 import { ReactComponent as UsersIcon } from './icons/users.svg';
 import { ReactComponent as CaretIcon } from './icons/caret.svg';
 import { ReactComponent as LogoutIcon } from './icons/logout.svg';
 import { ReactComponent as CogIcon } from './icons/cog.svg';
-import { useState } from 'react';
 
 const initialState = {
   isAuth: false,
@@ -31,50 +18,56 @@ const initialState = {
     email: '',
     birthday: '',
     gender: '',
-    friends: []
-  }
+    friends: [],
+    requests: []
+  },
+  users: []
 }
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = initialState;
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.resetState = this.resetState.bind(this);
+    this.handleLogIn = this.handleLogIn.bind(this);
+    this.handleLogOut = this.handleLogOut.bind(this);
+    this.handleResetState = this.handleResetState.bind(this);
+    this.handleUsers = this.handleUsers.bind(this);
+    this.handleRequests = this.handleRequests.bind(this);
   }
-  resetState() {
+  handleResetState = () => {
     const keys = Object.keys(this.state);
-    const stateReset = keys.reduce((acc, v) => ({ ...acc, [v]: undefined }), {});
+    const stateReset = keys.reduce((accumulator, value) => ({ ...accumulator, [value]: undefined }), {});
     this.setState({ ...stateReset, ...initialState });
   }
-  handleSubmit(data) {
+  handleUsers = (usersArray) => {
+    this.setState({ ...this.state, users: usersArray });
+  }
+  handleRequests = (requestsArray) => {
+    this.setState({ ...this.state, user: { 
+      ...this.state.user, requests: requestsArray } });
+      // [...this.state.user.requests, request]
+  }
+  handleLogIn = (data) => {
     this.setState({
       ...this.state,
       isAuth: true,
       token: data.token,
-      user: data.user,
+      user: { ...this.state.user, ...data.user }
     });
   }
   handleLogOut = async () => {
     try {
-      const response = await axios.post('/logout');
-      this.resetState();
+      await axios.post('/logout');
+      this.handleResetState();
     } catch(e) {
       console.log(e);
     }
   }
-  componentDidMount(){
+  componentDidMount = () => {
     (async () => {
       try {
         const response = await axios.get('/validate_cookie');
-        if(response){
-          this.setState({
-            ...this.state,
-            isAuth: true,
-            token: response.data.token,
-            user: response.data.user,
-          });
-        }
+        if(response) this.handleLogIn(response.data);
       } catch(e) {
         console.log(e);
       }
@@ -101,13 +94,13 @@ class App extends React.Component {
           <div className="main-content">
             <Switch>
               <Route exact path="/login" 
-                render={() => !isAuth ? <Login onSubmit={this.handleSubmit}/> : <Redirect to="/"/> }
+                render={() => !isAuth ? <Login onSubmit={this.handleLogIn}/> : <Redirect to="/"/> }
               />
               <Route exact path="/signup" 
-                render={() => <Signup onSubmit={this.handleSubmit}/>}
+                render={() => <Signup onSubmit={this.handleLogIn}/>}
               />
               <PrivateRoute exact path="/" isAuth={isAuth}>
-                <Home {...this.state}/>
+                <Home {...this.state} onUpdateUsers={this.handleUsers} onUpdateRequests={this.handleRequests} />
               </PrivateRoute>
               <PrivateRoute path="/profile" isAuth={isAuth}>
                 <Profile/>
@@ -145,10 +138,6 @@ function NavItem(props) {
 
   return (
     <li className="nav-item">
-      {/* <a href="" className="link" onClick={() => setOpen(!open)}>
-        {props.icon && <span className="icon-button">{props.icon}</span>}
-        {props.text}
-      </a> */}
       <Link to={props.to} className="link" onClick={() => setOpen(!open)}>
         {props.icon && <span className="icon-button">{props.icon}</span>}
         {props.text}
