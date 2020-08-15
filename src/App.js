@@ -10,8 +10,6 @@ import { ReactComponent as LogoutIcon } from './icons/logout.svg';
 import { ReactComponent as CogIcon } from './icons/cog.svg';
 
 const initialState = {
-  isAuth: false,
-  token: '',
   user: {
     firstname: '',
     lastname: '',
@@ -21,7 +19,9 @@ const initialState = {
     friends: [],
     requests: []
   },
-  users: []
+  users: [],
+  isAuth: false,
+  token: ''
 }
 
 class App extends React.Component {
@@ -45,7 +45,6 @@ class App extends React.Component {
   handleRequests = (requestsArray) => {
     this.setState({ ...this.state, user: { 
       ...this.state.user, requests: requestsArray } });
-      // [...this.state.user.requests, request]
   }
   handleLogIn = (data) => {
     this.setState({
@@ -63,6 +62,7 @@ class App extends React.Component {
       console.log(e);
     }
   }
+
   componentDidMount = () => {
     (async () => {
       try {
@@ -74,7 +74,7 @@ class App extends React.Component {
     })();
   }
   render() {
-    const {isAuth, user } = this.state;
+    const { isAuth, user } = this.state;
     return (
       <BrowserRouter>
         <div className="main">

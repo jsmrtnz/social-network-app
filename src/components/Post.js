@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react';
 import { Card, Image, Icon, Button, Container, Dropdown, Input, Form } from 'semantic-ui-react';
 import axios from 'axios';
 import useForm from '../hooks/useForm';
-import CommentList from './CommentList';
-import {_arrayBufferToUrl} from '../js/utils';
+import { CommentList } from './index';
+import { _arrayBufferToUrl, _timeAgo } from '../utils/helpers';
 
 function Post(props) {
   const [options, setOptions] = useState({ 
@@ -12,6 +12,12 @@ function Post(props) {
     collapsed: true
   });
   const inputRef = useRef(null);
+  const setMetadata = () => {
+    if(props.createdAt < props.updatedAt){
+      return 'Updated ' + _timeAgo(props.updatedAt);
+    } 
+    return 'Posted ' + _timeAgo(props.createdAt);
+  }
   const handleClickLike = () => {
     setOptions({ ...options, liked: !options.liked });
     document.activeElement.blur();
@@ -78,9 +84,9 @@ function Post(props) {
               ? _arrayBufferToUrl(user.avatar.data) 
               : (user.gender === "male" ? '/img/man.png' : '/img/woman.png')}
           />
-          <Card.Header>{user.firstname}</Card.Header>
+          <Card.Header>{user.firstname} {user.lastname}</Card.Header>
           <Card.Meta>
-            <span>{user.lastname}</span>
+            {setMetadata()}
           </Card.Meta>
           {props.content && 
             <Card.Description>

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Card, Image } from 'semantic-ui-react'
 import axios from 'axios';
-import {_arrayBufferToUrl} from '../js/utils';
+import { Button, Card, Image } from 'semantic-ui-react'
+import { _arrayBufferToUrl } from '../utils/helpers';
 
 function FriendRequest(props) {
   const handleResponse = async (res) => {

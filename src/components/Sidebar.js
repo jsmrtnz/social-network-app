@@ -5,48 +5,20 @@ import axios from 'axios';
 import { _arrayBufferToUrl } from '../utils/helpers';
 import { FriendRequest, Footer } from './index';
 
-function SideBar (props) {
-  
-  // const [requests, setRequests] = useState([]);
-  // const [users, setUsers] = useState([]);
-
-  // useEffect(() => {
-    // Get friend requests
-    // (async () => {
-    //   try {
-    //     const response = await axios.get('/fr');
-    //     for (const request of response.data) {
-    //       let user = await axios.get(`/user/meta?id=${request.from}`)
-    //       setRequests(requests => [...requests, {_id: request._id, user: user.data}])
-    //     };
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // })();
-    // // Find people you may know
-    // (async () => {
-    //   try {
-    //     const response = await axios.get('/users?limit=5&skip=0');
-    //     setUsers(response.data);
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // })();
-  // },[]);
-  
+function SideBar(props) {
+  const { user, users } = props;
   const handleFriendRequest = (id) => {
-    // setRequests(requests => requests.filter(request => request._id != id))
-    const { requests } = props.user;
-    props.onUpdateRequests(requests.filter(request => request._id != id))
+    props.onUpdateRequests(user.requests.filter(request => request._id != id))
   }
   const handleAddFriend = async (id) => {
     try {
       const response = await axios.post(`/fr?id=${id}`);
+      const el = document.querySelector(".add.friend");
+      el.innerHTML = response.status === 201 ? "Friend request sent" : "Add friend";
     } catch (e) {
       console.log(e);
     }
   }
-  const { user, users } = props;
   return (
     <div className='sidebar'>
       <Card>
@@ -78,8 +50,8 @@ function SideBar (props) {
             />
             <Card.Header>{user.firstname} {user.lastname}</Card.Header>
             <div className='buttons'>
-              <Button compact floated='right' size='mini' color='grey' content='Add friend' 
-                onClick={() => handleAddFriend(user._id)} />
+              <Button className='add friend' compact floated='right' size='mini'
+                onClick={() => handleAddFriend(user._id)}>Add friend</Button>
             </div>
           </Card.Content>
         ))}
