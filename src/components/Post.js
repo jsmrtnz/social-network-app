@@ -14,9 +14,9 @@ function Post(props) {
   const inputRef = useRef(null);
   const setMetadata = () => {
     if(props.createdAt < props.updatedAt){
-      return 'Updated ' + _timeAgo(props.updatedAt);
-    } 
-    return 'Posted ' + _timeAgo(props.createdAt);
+      return _timeAgo(props.updatedAt) + ' - Edited';
+    }
+    return _timeAgo(props.createdAt);
   }
   const handleClickLike = () => {
     setOptions({ ...options, liked: !options.liked });
@@ -56,6 +56,7 @@ function Post(props) {
   }
   const handleInputUpdate = () => {
     inputRef.current.classList.remove("disabled");
+    inputRef.current.parentElement.classList.remove("no-content");
     inputRef.current.focus();
   }
   const {inputs, handleInputChange} = useForm({ content: props.content });
@@ -88,8 +89,8 @@ function Post(props) {
           <Card.Meta>
             {setMetadata()}
           </Card.Meta>
-          {props.content && 
-            <Card.Description>
+          {/* {props.content &&  */}
+            <Card.Description className={!props.content ? 'no-content' : ''}>
               <input type="text" className='post-content disabled' name='content' 
                 value={inputs.content} 
                 ref={inputRef}
@@ -103,7 +104,7 @@ function Post(props) {
                 }} 
               />
             </Card.Description>
-          }
+          {/* } */}
         </Card.Content>
         <Container>
           <Image fluid src={props.image 

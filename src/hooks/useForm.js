@@ -10,11 +10,18 @@ const useForm = (initialValues, callback) => {
   }
   const handleInputChange = (event) => {
     event.persist();
-    let value = event.target.name === 'post'
-      ? event.target.files[0]
-      : event.target.value
+    let value = '';
+    switch (event.target.name) {
+      case 'post': 
+        value = event.target.files[0];
+        break;
+      case 'birthday': {
+        value = new Date(event.target.value + 'T00:00');
+      }
+      default:
+        value = event.target.value;
+    }
     setInputs(inputs => ({...inputs, [event.target.name]: value }))
-    // setInputs(inputs => ({...inputs, [event.target.name]: event.target.value }))
   }
   const clearInputs = () => {
     setInputs(initialValues);

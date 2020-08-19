@@ -45,7 +45,7 @@ export const _timeAgo = (time) => {
     token = 'ago',
     list_choice = 1;
 
-  if (seconds == 0) {
+  if (seconds < 5) {
     return 'Just now'
   }
   if (seconds < 0) {
@@ -54,13 +54,36 @@ export const _timeAgo = (time) => {
     list_choice = 2;
   }
   var i = 0,
-    format;
-  while (format = time_formats[i++])
+    format = time_formats[i];
+  while (format){
     if (seconds < format[0]) {
       if (typeof format[2] == 'string')
         return format[list_choice];
       else
         return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
     }
+    format = time_formats[i++];
+  }
   return time;
 }
+export const toIsoString = date => {
+  var tzo = -date.getTimezoneOffset(),
+      dif = tzo >= 0 ? '+' : '-',
+      pad = function(num) {
+          var norm = Math.floor(Math.abs(num));
+          return (norm < 10 ? '0' : '') + norm;
+      };
+  return date.getFullYear() +
+      '-' + pad(date.getMonth() + 1) +
+      '-' + pad(date.getDate()) +
+      'T' + pad(date.getHours()) +
+      ':' + pad(date.getMinutes()) +
+      ':' + pad(date.getSeconds()) +
+      dif + pad(tzo / 60) +
+      ':' + pad(tzo % 60);
+}
+export const formatDate = string => {
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(string).toLocaleDateString([],options);
+}
+export const getAge = birthDate => Math.floor((new Date() - new Date(birthDate).getTime()) / 3.15576e+10)

@@ -1,5 +1,6 @@
 import CommentList from './CommentList';
-import FindFriends from './FindFriends';
+import FindFriends from './FindFriends.data';
+import UserList from './UserList.component';
 import Footer from './Footer';
 import FriendRequest from './FriendRequest';
 import Home from './Home';
@@ -11,11 +12,14 @@ import Profile from './Profile';
 import Settings from './Settings';
 import Sidebar from './Sidebar';
 import Signup from './Signup';
-import Timeline from './Timeline';
+import PostListData from './PostList.data';
+import PostList from './PostList.component';
+import Navbar from './Navbar.component';
 
 export { 
-  CommentList, 
-  FindFriends,
+  CommentList,
+  FindFriends, 
+  UserList,
   Footer,
   FriendRequest,
   Home,
@@ -27,5 +31,7 @@ export {
   Settings,
   Sidebar,
   Signup,
-  Timeline
+  PostListData,
+  PostList,
+  Navbar
 };

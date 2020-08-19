@@ -1,13 +1,7 @@
-import React, { useState } from 'react';
-import { Route, BrowserRouter, Switch, Redirect, Link } from 'react-router-dom';
+import React from 'react';
 import axios from 'axios';
-import { Home, Login, Signup, Profile, FindFriends, Settings, PrivateRoute } from './components/index';
-
-import { ReactComponent as UserIcon } from './icons/user.svg';
-import { ReactComponent as UsersIcon } from './icons/users.svg';
-import { ReactComponent as CaretIcon } from './icons/caret.svg';
-import { ReactComponent as LogoutIcon } from './icons/logout.svg';
-import { ReactComponent as CogIcon } from './icons/cog.svg';
+import { Route, BrowserRouter, Switch, Redirect, Link } from 'react-router-dom';
+import { Navbar, Home, Login, Signup, Profile, FindFriends, Settings, PrivateRoute } from './components/index';
 
 const initialState = {
   user: {
@@ -21,7 +15,8 @@ const initialState = {
   },
   users: [],
   isAuth: false,
-  token: ''
+  token: '',
+  activeItem: 'home'
 }
 
 class App extends React.Component {
@@ -33,7 +28,10 @@ class App extends React.Component {
     this.handleResetState = this.handleResetState.bind(this);
     this.handleUsers = this.handleUsers.bind(this);
     this.handleRequests = this.handleRequests.bind(this);
+    this.handleItemClick = this.handleItemClick.bind(this);
   }
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
   handleResetState = () => {
     const keys = Object.keys(this.state);
     const stateReset = keys.reduce((accumulator, value) => ({ ...accumulator, [value]: undefined }), {});
@@ -62,7 +60,6 @@ class App extends React.Component {
       console.log(e);
     }
   }
-
   componentDidMount = () => {
     (async () => {
       try {
@@ -74,22 +71,12 @@ class App extends React.Component {
     })();
   }
   render() {
-    const { isAuth, user } = this.state;
+    const { isAuth, user, activeItem } = this.state;
     return (
       <BrowserRouter>
         <div className="main">
           { isAuth && 
-            <Navbar>
-              <span className="navbar-title">
-                <Link to="/" className='link'>Social Network</Link>
-              </span>
-              <NavItem icon={<UserIcon />} text={user.firstname} to="/profile" />
-              <NavItem text={"Home"} to="/" />
-              <NavItem icon={<UsersIcon/>}  to="/findfriends" />
-              <NavItem icon={<CaretIcon/>} to="">
-                <DropdownMenu user={user} onLogOut={this.handleLogOut}/>
-              </NavItem>
-            </Navbar>
+            <Navbar user={user} activeItem={activeItem} onLogout={this.handleLogOut} onItemClick={this.handleItemClick}/>
           }
           <div className="main-content">
             <Switch>
@@ -103,10 +90,10 @@ class App extends React.Component {
                 <Home {...this.state} onUpdateUsers={this.handleUsers} onUpdateRequests={this.handleRequests} />
               </PrivateRoute>
               <PrivateRoute path="/profile" isAuth={isAuth}>
-                <Profile/>
+                <Profile user={this.state.user} />
               </PrivateRoute>
               <PrivateRoute path="/findfriends" isAuth={isAuth}>
-                <FindFriends/>
+                <FindFriends />
               </PrivateRoute>
               <PrivateRoute path="/settings" isAuth={isAuth}>
                 <Settings/>
@@ -123,55 +110,6 @@ class App extends React.Component {
       </BrowserRouter>
     );
   }
-}
-
-function Navbar(props) {
-  return (
-    <nav className="navbar">
-      <ul className="navbar-nav">{props.children}</ul>
-    </nav>
-  );
-}
-
-function NavItem(props) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <li className="nav-item">
-      <Link to={props.to} className="link" onClick={() => setOpen(!open)}>
-        {props.icon && <span className="icon-button">{props.icon}</span>}
-        {props.text}
-      </Link>
-      {open && props.children}
-    </li>
-  );
-}
-
-function DropdownMenu(props) {
-
-  function DropdownItem(props) {
-    return (
-      <a href="#" className="menu-item" onClick={props.onClick}>
-        <span className="icon-button">{props.leftIcon}</span>
-        {props.children}
-        <span className="icon-right">{props.rightIcon}</span>
-      </a>
-    );
-  }
-  return (
-    <div className="nav-dropdown" > 
-      <div className="menu">
-        <DropdownItem
-          leftIcon={<CogIcon />}>
-          Settings
-        </DropdownItem>
-        <DropdownItem
-         leftIcon={<LogoutIcon />} onClick={props.onLogOut}>
-          Log Out
-        </DropdownItem>
-      </div>
-    </div>
-  );
 }
 
 export default App;
