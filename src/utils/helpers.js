@@ -87,3 +87,11 @@ export const formatDate = string => {
   return new Date(string).toLocaleDateString([],options);
 }
 export const getAge = birthDate => Math.floor((new Date() - new Date(birthDate).getTime()) / 3.15576e+10)
+export const customInputFile = () => {
+  const input = document.querySelector('.input-file');
+  let label	 = input.nextElementSibling;
+  input.addEventListener('change', (event) => {
+    var fileName = event.target.files[0].name;
+    label.innerHTML = fileName;
+  });
+}

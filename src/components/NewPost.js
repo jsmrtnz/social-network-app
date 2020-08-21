@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import useForm from '../hooks/useForm';
+import { customInputFile } from '../utils/helpers';
 
 function NewPost(props) {
   useEffect(() => {
-    window.customInputFile();    
+    customInputFile();
   });
   const newPost = async () => {
     try {

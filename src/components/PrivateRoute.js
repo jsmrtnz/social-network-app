@@ -4,7 +4,27 @@ import {
   Redirect
 } from 'react-router-dom';
 
-function PrivateRoute({ isAuth, children, ...rest}){
+const renderMergedProps = (component, ...rest) => {
+  const finalProps = Object.assign({}, ...rest);
+  return (
+    React.createElement(component, finalProps)
+  );
+}
+const PrivateRoute = ({ component, isAuth, ...rest }) => {
+  return (
+    <Route {...rest} render={routeProps => {
+      return isAuth ? (
+        renderMergedProps(component, routeProps, rest)
+      ) : (
+        <Redirect to={{
+          pathname: "/login",
+          state: { from: routeProps.location }
+        }}/>
+      );
+    }}/>
+  );
+};
+/* function PrivateRoute({ isAuth, children, ...rest}){
   return (
     <Route
       {...rest}
@@ -19,6 +39,6 @@ function PrivateRoute({ isAuth, children, ...rest}){
       }
     />
   );
-}
+} */
 
 export default PrivateRoute;

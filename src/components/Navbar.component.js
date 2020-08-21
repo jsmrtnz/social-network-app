@@ -10,7 +10,7 @@ export default function Navbar(props){
       <Menu size='large' color='yellow' pointing secondary>
         <Menu.Item header as={Link} to="/">Social Network</Menu.Item>
         <Menu.Menu position='right'>
-          <Menu.Item name='profile' active={activeItem === 'profile'} as={Link} to="/profile"
+          <Menu.Item name='profile' active={activeItem === 'profile'} as={Link} to={`/user/${user._id}`}
             onClick={props.onItemClick}>
               <Image 
                 floated='left' size='mini' className='bg-avatar'

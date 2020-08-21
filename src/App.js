@@ -26,16 +26,19 @@ class App extends React.Component {
     this.handleLogIn = this.handleLogIn.bind(this);
     this.handleLogOut = this.handleLogOut.bind(this);
     this.handleResetState = this.handleResetState.bind(this);
+    this.handleUser = this.handleUser.bind(this);
     this.handleUsers = this.handleUsers.bind(this);
     this.handleRequests = this.handleRequests.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
   }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
-
   handleResetState = () => {
     const keys = Object.keys(this.state);
     const stateReset = keys.reduce((accumulator, value) => ({ ...accumulator, [value]: undefined }), {});
     this.setState({ ...stateReset, ...initialState });
+  }
+  handleUser = (user) => {
+    this.setState({ user: {...this.state.user, ...user }});
   }
   handleUsers = (usersArray) => {
     this.setState({ ...this.state, users: usersArray });
@@ -64,14 +67,14 @@ class App extends React.Component {
     (async () => {
       try {
         const response = await axios.get('/validate_cookie');
-        if(response) this.handleLogIn(response.data);
+        this.handleLogIn(response.data);
       } catch(e) {
         console.log(e);
       }
     })();
   }
   render() {
-    const { isAuth, user, activeItem } = this.state;
+    const { isAuth, user, users, activeItem } = this.state;
     return (
       <BrowserRouter>
         <div className="main">
@@ -86,18 +89,12 @@ class App extends React.Component {
               <Route exact path="/signup" 
                 render={() => <Signup onSubmit={this.handleLogIn}/>}
               />
-              <PrivateRoute exact path="/" isAuth={isAuth}>
-                <Home {...this.state} onUpdateUsers={this.handleUsers} onUpdateRequests={this.handleRequests} />
-              </PrivateRoute>
-              <PrivateRoute path="/profile" isAuth={isAuth}>
-                <Profile user={this.state.user} />
-              </PrivateRoute>
-              <PrivateRoute path="/findfriends" isAuth={isAuth}>
-                <FindFriends />
-              </PrivateRoute>
-              <PrivateRoute path="/settings" isAuth={isAuth}>
-                <Settings/>
-              </PrivateRoute>
+              <PrivateRoute exact path="/" isAuth={isAuth} component={Home} user={user} users={users} 
+                onUpdateUsers={this.handleUsers} onUpdateRequests={this.handleRequests} />
+              <PrivateRoute path="/user/:id" isAuth={isAuth} component={Profile}
+                user={this.state.user} onUpdateUser={this.handleUser} />
+              <PrivateRoute path="/findfriends" isAuth={isAuth} component={FindFriends} />
+              <PrivateRoute path="/settings" isAuth={isAuth} component={Settings} />
               <Route path="*" >
                 <div>
                   <p>Page not found!</p>

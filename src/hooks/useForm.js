@@ -6,6 +6,7 @@ const useForm = (initialValues, callback) => {
     if(event) {
       event.preventDefault();
       callback();
+      clearInputs();
     }
   }
   const handleInputChange = (event) => {
