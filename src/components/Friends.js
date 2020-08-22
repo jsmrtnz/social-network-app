@@ -16,8 +16,8 @@ function Friends(props) {
   }
   const handleDeleteFriend = async (id, index) => {
     try {
-      const response = await axios.delete(`/friend?id=${id}`);
-      setFriends(friends.filter(friend => friend._id != id));
+      await axios.delete(`/friend?id=${id}`);
+      setFriends(friends.filter(friend => friend._id !== id));
     } catch (e) {
       console.log(e);
     }

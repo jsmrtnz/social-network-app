@@ -26,7 +26,7 @@ class App extends React.Component {
     this.handleLogIn = this.handleLogIn.bind(this);
     this.handleLogOut = this.handleLogOut.bind(this);
     this.handleResetState = this.handleResetState.bind(this);
-    this.handleUser = this.handleUser.bind(this);
+    // this.handleUser = this.handleUser.bind(this);
     this.handleUsers = this.handleUsers.bind(this);
     this.handleRequests = this.handleRequests.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
@@ -37,9 +37,9 @@ class App extends React.Component {
     const stateReset = keys.reduce((accumulator, value) => ({ ...accumulator, [value]: undefined }), {});
     this.setState({ ...stateReset, ...initialState });
   }
-  handleUser = (user) => {
-    this.setState({ user: {...this.state.user, ...user }});
-  }
+  // handleUser = (user) => {
+  //   this.setState({ user: {...this.state.user, ...user }});
+  // }
   handleUsers = (usersArray) => {
     this.setState({ ...this.state, users: usersArray });
   }
@@ -89,10 +89,9 @@ class App extends React.Component {
               <Route exact path="/signup" 
                 render={() => <Signup onSubmit={this.handleLogIn}/>}
               />
-              <PrivateRoute exact path="/" isAuth={isAuth} component={Home} user={user} users={users} 
-                onUpdateUsers={this.handleUsers} onUpdateRequests={this.handleRequests} />
-              <PrivateRoute path="/user/:id" isAuth={isAuth} component={Profile}
-                user={this.state.user} onUpdateUser={this.handleUser} />
+              <PrivateRoute exact path="/" isAuth={isAuth} component={Home} user={user} 
+                users={users} onUpdateUsers={this.handleUsers} onUpdateRequests={this.handleRequests} />
+              <PrivateRoute path="/user/:id" isAuth={isAuth} component={Profile} user={user} />
               <PrivateRoute path="/findfriends" isAuth={isAuth} component={FindFriends} />
               <PrivateRoute path="/settings" isAuth={isAuth} component={Settings} />
               <Route path="*" >

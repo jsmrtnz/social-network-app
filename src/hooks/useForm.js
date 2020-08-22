@@ -18,6 +18,7 @@ const useForm = (initialValues, callback) => {
         break;
       case 'birthday': {
         value = new Date(event.target.value + 'T00:00');
+        break;
       }
       default:
         value = event.target.value;

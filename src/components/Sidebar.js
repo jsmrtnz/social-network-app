@@ -2,14 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { Card } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
-import { _arrayBufferToUrl } from '../utils/helpers';
 import { FriendRequest, Footer, UserList } from './index';
 
 function SideBar(props) {
   const { user, users } = props;
   const refsArray = [];
   const handleFriendRequest = (id) => {
-    props.onUpdateRequests(user.requests.filter(request => request._id != id))
+    props.onUpdateRequests(user.requests.filter(request => request._id !== id))
   }
   const handleAddFriend = async (id, index) => {
     try {

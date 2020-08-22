@@ -10,11 +10,11 @@ const renderMergedProps = (component, ...rest) => {
     React.createElement(component, finalProps)
   );
 }
-const PrivateRoute = ({ component, isAuth, ...rest }) => {
+const PrivateRoute = ({ component, isAuth, key, ...rest }) => {
   return (
     <Route {...rest} render={routeProps => {
       return isAuth ? (
-        renderMergedProps(component, routeProps, rest)
+        renderMergedProps(component, routeProps, key, rest)
       ) : (
         <Redirect to={{
           pathname: "/login",

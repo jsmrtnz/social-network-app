@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, Image, Icon, Button, Container, Dropdown, Input, Form } from 'semantic-ui-react';
 import axios from 'axios';
 import useForm from '../hooks/useForm';
@@ -85,7 +86,9 @@ function Post(props) {
               ? _arrayBufferToUrl(user.avatar.data) 
               : (user.gender === "male" ? '/img/man.png' : '/img/woman.png')}
           />
-          <Card.Header>{user.firstname} {user.lastname}</Card.Header>
+          <Card.Header as={Link} to={`/user/${user._id}`}>
+            {user.firstname} {user.lastname}
+          </Card.Header>
           <Card.Meta>
             {setMetadata()}
           </Card.Meta>
