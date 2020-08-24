@@ -1,15 +1,15 @@
 import React from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import useForm from '../hooks/useForm';
 
 function Login(props) {
-  const history = useHistory();
+  // const history = useHistory();
   const loginUser = async () => {
     try {
       const response = await axios.post('/login', inputs);
       props.onSubmit(response.data);
-      history.push('/');
+      // history.push('/');
     } catch(e) {
       console.log(e);
     }

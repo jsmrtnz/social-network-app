@@ -1,8 +1,6 @@
 import React from 'react';
-import { 
-  Route,
-  Redirect
-} from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
+import { AuthContext } from '../state/auth-context';
 
 const renderMergedProps = (component, ...rest) => {
   const finalProps = Object.assign({}, ...rest);
@@ -12,33 +10,21 @@ const renderMergedProps = (component, ...rest) => {
 }
 const PrivateRoute = ({ component, isAuth, key, ...rest }) => {
   return (
-    <Route {...rest} render={routeProps => {
-      return isAuth ? (
-        renderMergedProps(component, routeProps, key, rest)
-      ) : (
-        <Redirect to={{
-          pathname: "/login",
-          state: { from: routeProps.location }
+    <AuthContext.Consumer>
+      {({ loggedIn }) => (
+        <Route {...rest} render={routeProps => {
+          return loggedIn ? (
+            renderMergedProps(component, routeProps, key, rest)
+          ) : (
+            <Redirect to={{
+              pathname: "/login",
+              state: { from: routeProps.location }
+            }}/>
+          );
         }}/>
-      );
-    }}/>
+      )}
+    </AuthContext.Consumer>
   );
 };
-/* function PrivateRoute({ isAuth, children, ...rest}){
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        isAuth ? ( children ) : (
-          <Redirect to={{ 
-              pathname: "/login",
-              state: { from: location }
-            }}
-          />
-        )
-      }
-    />
-  );
-} */
 
 export default PrivateRoute;

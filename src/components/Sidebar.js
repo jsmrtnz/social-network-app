@@ -37,7 +37,7 @@ function SideBar(props) {
         <Card.Content className='requests'>
           <Card.Header>People you may know</Card.Header>
         </Card.Content>
-        <UserList users={users} ref={refsArray} imageSize={'mini'} action={"Add friend"}
+        <UserList profile={user} users={users} ref={refsArray} imageSize={'mini'} action={"Add friend"}
             onClick={(id, index) => handleAddFriend(id, index)} />
       </Card>
       <Footer />

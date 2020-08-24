@@ -12,7 +12,7 @@ class Profile extends React.Component {
       profile: null
     }
     this.fetchProfile = this.fetchProfile.bind(this);
-    this.fetchPosts = this.fetchPosts.bind(this);
+    // this.fetchPosts = this.fetchPosts.bind(this);
   }
   fetchProfile = async () => {
     try {
@@ -22,14 +22,19 @@ class Profile extends React.Component {
       console.log(e);
     }
   }
-  fetchPosts = async (callback) => {
-    try {
-      const { data } = await axios.get(`/posts?id=${this.props.match.params.id}`);
-      callback(data);
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // fetchPosts = async (callback) => {
+  //   try {
+  //     let data = [];
+  //     const response = await axios.get(`/posts?id=${this.props.match.params.id}`);
+  //     for (const post of response.data) {
+  //       let user = await axios.get(`/user/meta?id=${post.owner}`)
+  //       data.push({...post, ...{owner: user.data}})
+  //     }
+  //     callback(data);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
   componentDidMount() {
     this.fetchProfile();
   }
@@ -49,8 +54,9 @@ class Profile extends React.Component {
               {profile && <ProfileCard user={profile} />}
             </Grid.Column>
             <Grid.Column width={8}>
+            {/* onFetch={this.fetchPosts} */}
               {profile && 
-                <PostListData user={profile} match={this.props.match} onFetch={this.fetchPosts}
+                <PostListData user={profile} match={this.props.match} 
                 render={({ ...props }) => <PostList {...props} />} />
               }
             </Grid.Column>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card, Image } from 'semantic-ui-react'
+import { Button, Card, Image } from 'semantic-ui-react';
+import { AuthContext } from '../state/auth-context';
 import { _arrayBufferToUrl } from '../utils/helpers';
 
 const UserList = React.forwardRef((props, refsArray) => {
@@ -15,8 +16,12 @@ const UserList = React.forwardRef((props, refsArray) => {
             {user.firstname} {user.lastname}
           </Card.Header>
           <div className="buttons">
-            <Button ref={el => { refsArray[i] = el}} compact floated="right" content={props.action}
-              onClick={() => props.onClick(user._id, i)} />
+            <AuthContext.Consumer>
+              {({userId}) => ( userId === props.profile._id &&
+                <Button ref={el => { refsArray[i] = el}} compact floated="right" content={props.action}
+                onClick={() => props.onClick(user._id, i)} />
+              )}
+            </AuthContext.Consumer>
           </div>
         </Card.Content>
       ))}

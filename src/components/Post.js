@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Image, Icon, Button, Container, Dropdown, Input, Form } from 'semantic-ui-react';
 import axios from 'axios';
+import { Card, Image, Icon, Button, Container, Dropdown, Input, Form } from 'semantic-ui-react';
 import useForm from '../hooks/useForm';
+import { AuthContext } from '../state/auth-context';
 import { CommentList } from './index';
 import { _arrayBufferToUrl, _timeAgo } from '../utils/helpers';
 
@@ -13,11 +14,12 @@ function Post(props) {
     collapsed: true
   });
   const inputRef = useRef(null);
+  const { post } = props;
   const setMetadata = () => {
-    if(props.createdAt < props.updatedAt){
-      return _timeAgo(props.updatedAt) + ' - Edited';
+    if(post.createdAt < post.updatedAt){
+      return _timeAgo(post.updatedAt) + ' - Edited';
     }
-    return _timeAgo(props.createdAt);
+    return _timeAgo(post.createdAt);
   }
   const handleClickLike = () => {
     setOptions({ ...options, liked: !options.liked });
@@ -33,7 +35,7 @@ function Post(props) {
   }
   const handleLike = async () => {
     try {
-      const {data: {_id, owner}} = await axios.post('/posts/like', { _id: props._id } );
+      const {data: {_id, owner}} = await axios.post('/posts/like', { _id: post._id } );
       props.onLike(_id, owner);
     } catch(e) {
       console.log(e);
@@ -41,7 +43,7 @@ function Post(props) {
   }
   const handleDeletePost = async () => {
     try {
-      const {data: {_id}} = await axios.delete(`/posts?id=${props._id}`);
+      const {data: {_id}} = await axios.delete(`/posts?id=${post._id}`);
       props.onDelete(_id)
     } catch(e) {
       console.log(e);
@@ -49,7 +51,7 @@ function Post(props) {
   }
   const handleUpdatePost = async () => {
     try {
-      const {data: { _id, content }} = await axios.patch(`/posts?id=${props._id}`, inputs);
+      const {data: { _id, content }} = await axios.patch(`/posts?id=${post._id}`, inputs);
       props.onUpdate( _id, content);
     } catch(e) {
       console.log(e);
@@ -60,64 +62,59 @@ function Post(props) {
     inputRef.current.parentElement.classList.remove("no-content");
     inputRef.current.focus();
   }
-  const {inputs, handleInputChange} = useForm({ content: props.content });
-
-  function isObject(obj) {
-    return obj === Object(obj);
-  }
-  const user = isObject(props.owner) ? props.owner : props.user;
+  const {inputs, handleInputChange} = useForm({ content: post.content });
   return (
     <div className="post">
       <Card fluid>
-        {user._id === props.user._id &&
-          <Dropdown icon='ellipsis vertical' direction='left'>
-            <Dropdown.Menu>
-              <Dropdown.Item text='Edit' onClick={handleInputUpdate} />
-              <Dropdown.Item text='Delete' onClick={handleDeletePost} />
-            </Dropdown.Menu>
-          </Dropdown>
-        }
+        <AuthContext.Consumer>
+          {({userId}) => ( userId === post.owner._id &&
+            <Dropdown icon='ellipsis vertical' direction='left'>
+              <Dropdown.Menu>
+                <Dropdown.Item text='Edit' onClick={handleInputUpdate} />
+                <Dropdown.Item text='Delete' onClick={handleDeletePost} />
+              </Dropdown.Menu>
+            </Dropdown>
+          )}
+        </AuthContext.Consumer>
         <Card.Content>
           <Image 
             floated='left'
             size='mini'
             className='bg-avatar'
-            src={user.avatar 
-              ? _arrayBufferToUrl(user.avatar.data) 
-              : (user.gender === "male" ? '/img/man.png' : '/img/woman.png')}
+            src={post.owner.avatar 
+              ? _arrayBufferToUrl(post.owner.avatar.data) 
+              : (post.owner.gender === "male" ? '/img/man.png' : '/img/woman.png')}
           />
-          <Card.Header as={Link} to={`/user/${user._id}`}>
-            {user.firstname} {user.lastname}
+          <Card.Header as={Link} to={`/user/${post.owner._id}`}>
+            {post.owner.firstname} {post.owner.lastname}
           </Card.Header>
           <Card.Meta>
             {setMetadata()}
           </Card.Meta>
-          {/* {props.content &&  */}
-            <Card.Description className={!props.content ? 'no-content' : ''}>
-              <input type="text" className='post-content disabled' name='content' 
-                value={inputs.content} 
-                ref={inputRef}
-                onChange={handleInputChange}
-                onKeyDown={(event) => {
-                  if (event.keyCode === 13) {
-                    inputRef.current.classList.add("disabled");
-                    inputRef.current.blur();
-                    handleUpdatePost();
-                  }
-                }} 
-              />
-            </Card.Description>
-          {/* } */}
+          <Card.Description className={!post.content ? 'no-content' : ''}>
+            <input type="text" className='post-content disabled' name='content' 
+              value={inputs.content} 
+              ref={inputRef}
+              onChange={handleInputChange}
+              onKeyDown={(event) => {
+                if (event.keyCode === 13) {
+                  inputRef.current.classList.add("disabled");
+                  inputRef.current.blur();
+                  handleUpdatePost();
+                }
+              }} 
+            />
+          </Card.Description>
         </Card.Content>
         <Container>
-          <Image fluid src={props.image 
-            ? _arrayBufferToUrl(props.image.data) 
+          <Image fluid src={post.image 
+            ? _arrayBufferToUrl(post.image.data) 
             : ''} />
         </Container>
         <Container className='contrast' fluid>
           <Button.Group floated='left' size='small'>
             <Button className='action' toggle active={options.liked} onClick={handleClickLike} animated='vertical'>
-              <Button.Content hidden>{props.likes.length} likes</Button.Content>
+              <Button.Content hidden>{post.likes.length} likes</Button.Content>
               <Button.Content visible>
                 <Icon name='thumbs up'/>Like
               </Button.Content>

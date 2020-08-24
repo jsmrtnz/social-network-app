@@ -16,7 +16,7 @@ function NewPost(props) {
       // , { headers: {
       //   'Authorization': 'Bearer ' + props.token
       // }}
-      props.onSubmitPost(response.data);
+      props.onSubmitPost({ ...response.data, ...{ owner: props.user }});
       clearInputs();
     } catch(e) {
       console.log(e);

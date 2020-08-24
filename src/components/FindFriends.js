@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card, Grid } from 'semantic-ui-react'
 import { UserList } from './index';
 
-function FindFriends() {
+function FindFriends(props) {
   const [users, setUsers] = useState([]);
   const refsArray = [];
   const fetchUsers = async () => {
@@ -32,7 +32,7 @@ function FindFriends() {
           <Card.Content>
             <Card.Header>People you may know</Card.Header>
           </Card.Content>
-          <UserList users={users} ref={refsArray} imageSize={'tiny'} action={"Add friend"}
+          <UserList profile={props.user} users={users} ref={refsArray} imageSize={'tiny'} action={"Add friend"}
             onClick={(id, index) => handleAddFriend(id, index)} />
         </Card>
       </Grid.Column>

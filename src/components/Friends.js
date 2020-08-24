@@ -6,9 +6,10 @@ import { UserList } from './index';
 function Friends(props) {
   const [friends, setFriends] = useState([]);
   const refsArray = [];
+  const { user } = props;
   const fetchFriends = async () => {
     try {
-      const response = await axios.get(`/friends?id=${props.user._id}`);
+      const response = await axios.get(`/friends?id=${user._id}`);
       setFriends(response.data);
     } catch (e) {
       console.log(e);
@@ -30,9 +31,9 @@ function Friends(props) {
       <Grid.Column width={12} className="users">
         <Card>
           <Card.Content>
-            <Card.Header>{props.user.firstname}'s friends</Card.Header>
+            <Card.Header>{user.firstname}'s friends</Card.Header>
           </Card.Content>
-          <UserList users={friends} ref={refsArray} imageSize={'tiny'} action={"Delete friend"}
+          <UserList profile={user} users={friends} ref={refsArray} imageSize={'tiny'} action={"Delete friend"}
             onClick={(id, index) => handleDeleteFriend(id, index)} />
         </Card>
       </Grid.Column>
