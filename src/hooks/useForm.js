@@ -13,7 +13,8 @@ const useForm = (initialValues, callback) => {
     event.persist();
     let value = '';
     switch (event.target.name) {
-      case 'post': 
+      case 'avatar':
+      case 'post':
         value = event.target.files[0];
         break;
       case 'birthday': {

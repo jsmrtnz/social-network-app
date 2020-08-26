@@ -25,7 +25,7 @@ function NewPost(props) {
   const {inputs, handleInputChange, handleSubmit, clearInputs} = useForm({content: '', imgLabel: 'Add Photo'}, newPost);
   return (
     <div className="new-post">
-      <form className="post-form" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <textarea className="post-textarea" placeholder={"What's on your mind, " + props.user.firstname +"?"} name="content" value={inputs.content} onChange={handleInputChange}></textarea>
         <div className="post-inputs">
           <input className="input-file" type="file" id="fileToUpload" name="post" onChange={handleInputChange}/>

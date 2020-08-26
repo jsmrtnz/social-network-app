@@ -240,7 +240,7 @@ textarea {
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
 }
 .post .description.no-content {
-  height: 0;
+  display: none;
 }
 .post-textarea {
   width: 100%;
@@ -254,6 +254,7 @@ textarea {
   text-align: right;
   margin-top: 3px;
 }
+.picture .upload-avatar,
 .new-post .input-file {
   width: 0.1px;
 	height: 0.1px;
@@ -292,7 +293,6 @@ textarea {
 	outline: 1px dotted #000;
 	outline: -webkit-focus-ring-color auto 5px;
 }
-
 .ui.card {
   position: relative;
 }
@@ -304,14 +304,14 @@ textarea {
   top: 15px;
   right: 15px;
 }
-.ui.card>.content {
-  padding: 1em 1em 0.5em 1em;
-}
 .ui.card>.content>.header {
   display: inline;
 }
 .m-14 {
   margin-bottom: 14px;
+}
+.post .ui.card>.content {
+  padding: 1em 1em 0.5em 1em;
 }
 .post .ui.buttons .button.action,
 .post .ui.buttons .button.action .label {
@@ -389,4 +389,30 @@ textarea {
 .users .buttons>.button:hover {
   background-color: #000;
   color: var(--text-color);
+}
+.profile {
+  position: relative;
+}
+.profile .picture {
+  position: absolute;
+  top: 150px;
+  right: 6px;
+}
+.profile .picture .icon:before {
+  line-height: calc(var(--nav-size)/2);
+  height: calc(var(--nav-size)/2);
+}
+.profile .picture .icon {
+  height: calc(var(--nav-size)/2);
+  width: calc(var(--nav-size)/2);
+  color: var(--text-color);
+  background: var(--color-pri);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.profile .picture .icon.invisible,
+.profile .picture .icon.invisible:before {
+  display: none;
+  height: 0px;
+  width: 0px;
 }

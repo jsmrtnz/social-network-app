@@ -33,6 +33,7 @@ class App extends React.Component {
     this.handleUsers = this.handleUsers.bind(this);
     this.handleRequests = this.handleRequests.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
+    this.updateUser = this.updateUser.bind(this);
   }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
   handleResetState = () => {
@@ -44,8 +45,10 @@ class App extends React.Component {
     this.setState({ ...this.state, users: usersArray });
   }
   handleRequests = (requestsArray) => {
-    this.setState({ ...this.state, user: { 
-      ...this.state.user, requests: requestsArray } });
+    this.setState({ ...this.state, user: { ...this.state.user, requests: requestsArray }});
+  }
+  updateUser = (user) => {
+    this.setState({ ...this.state, user: { ...this.state.user, ...user }});
   }
   handleLogIn = (data) => {
     this.setState({
@@ -92,7 +95,7 @@ class App extends React.Component {
                 />
                 <PrivateRoute exact path="/" component={Home} user={user} 
                   users={users} onUpdateUsers={this.handleUsers} onUpdateRequests={this.handleRequests} />
-                <PrivateRoute path="/user/:id" component={Profile} />
+                <PrivateRoute path="/user/:id" component={Profile} onUpdateUser={this.updateUser} />
                 <PrivateRoute path="/findfriends" component={FindFriends} user={user} />
                 <PrivateRoute path="/settings" component={Settings} user={user} />
                 <Route path="*" >

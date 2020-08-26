@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Card, Image, Icon, Button, Container, Dropdown, Input, Form } from 'semantic-ui-react';
@@ -8,6 +8,7 @@ import { CommentList } from './index';
 import { _arrayBufferToUrl, _timeAgo } from '../utils/helpers';
 
 function Post(props) {
+  const auth = useContext(AuthContext);
   const [options, setOptions] = useState({ 
     liked: false, 
     content: 'View comments',
@@ -62,6 +63,9 @@ function Post(props) {
     inputRef.current.parentElement.classList.remove("no-content");
     inputRef.current.focus();
   }
+  useEffect(() => {
+    setOptions({ ...options, liked: post.likes.includes(auth.userId) ? true : false });
+  },[]);
   const {inputs, handleInputChange} = useForm({ content: post.content });
   return (
     <div className="post">
@@ -81,7 +85,7 @@ function Post(props) {
             floated='left'
             size='mini'
             className='bg-avatar'
-            src={post.owner.avatar 
+            src={post.owner.avatar
               ? _arrayBufferToUrl(post.owner.avatar.data) 
               : (post.owner.gender === "male" ? '/img/man.png' : '/img/woman.png')}
           />
@@ -113,7 +117,8 @@ function Post(props) {
         </Container>
         <Container className='contrast' fluid>
           <Button.Group floated='left' size='small'>
-            <Button className='action' toggle active={options.liked} onClick={handleClickLike} animated='vertical'>
+            <Button className='action' toggle onClick={handleClickLike} animated='vertical'
+              active={options.liked}>
               <Button.Content hidden>{post.likes.length} likes</Button.Content>
               <Button.Content visible>
                 <Icon name='thumbs up'/>Like

@@ -9,7 +9,6 @@ export const _arrayBufferToUrl = (buffer) => {
   let base64String = window.btoa( binary );
   return `data:image/png;base64,${base64String}`;
 }
-
 // Format date as a string stating the time elapsed.
 export const _timeAgo = (time) => {
   switch (typeof time) {
