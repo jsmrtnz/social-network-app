@@ -1,49 +1,65 @@
-import React from 'react';
-import { Comment } from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Comment, Input, Form } from 'semantic-ui-react';
+import useForm from '../hooks/useForm';
+import { MyComment } from './index';
 
 function CommentList(props) {
+  const [comments, setComments] = useState([]);
+  const { inputs, handleInputChange, clearInputs } = useForm({ content: '' });
+  const { post } = props;
+
+  const fetchComments = async () => {
+    try {
+      let data = [];
+      const response = await axios.get(`/comments?id=${post._id}`);
+      for (const comment of response.data) {
+        let author = await axios.get(`/user/meta?id=${comment.author}`);
+        data.push({...comment, ...{author: author.data}});
+      }
+      setComments(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  const handleCreate = async () => {
+    try {
+      const { data: comment } = await axios.post('/comments', { _id: post._id, ...inputs });
+      const { data: author } = await axios.get(`/user/meta?id=${comment.author}`);
+      const newComments = comments.concat({ ...comment, ...{ author }});
+      setComments(newComments);
+      clearInputs();
+    } catch(e) {
+      console.log(e);
+    }
+  }
+  const handleDelete = (id) => {
+    const newComments = comments.filter(comment => comment._id !== id)
+    setComments(newComments);
+  }
+  const handleUpdate = (id, content) => {
+    const newComments = comments.map((comment) => {
+      if (comment._id === id) {
+        return { ...comment, content };
+      }
+      return comment;
+    }); 
+    setComments(newComments);
+  }
+  useEffect(() => {
+    fetchComments();
+  },[]);
   return (
     <div>
       <Comment.Group collapsed={props.collapsed} size='small'>
-        <Comment>
-          <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/christian.jpg' />
-          <Comment.Content>
-            <Comment.Author as='a'>Christian Rocha</Comment.Author>
-            <Comment.Metadata>
-              <span>2 days ago</span>
-            </Comment.Metadata>
-            <Comment.Text>
-              I'm very interested in this motherboard. Do you know if it'd
-              work in a Intel LGA775 CPU socket?
-            </Comment.Text>
-          </Comment.Content>
-        </Comment>
-
-        <Comment>
-          <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg' />
-          <Comment.Content>
-            <Comment.Author as='a'>Elliot Fu</Comment.Author>
-            <Comment.Metadata>
-              <span>1 day ago</span>
-            </Comment.Metadata>
-            <Comment.Text>No, it wont</Comment.Text>
-          </Comment.Content>
-        </Comment>
-
-        <Comment>
-          <Comment.Avatar
-            as='a'
-            src='https://react.semantic-ui.com/images/avatar/small/jenny.jpg'
-          />
-          <Comment.Content>
-            <Comment.Author as='a'>Jenny Hess</Comment.Author>
-            <Comment.Metadata>
-              <span>20 minutes ago</span>
-            </Comment.Metadata>
-            <Comment.Text>Maybe it would.</Comment.Text>
-          </Comment.Content>
-        </Comment>
+        {comments.map((comment) => (
+          <MyComment key={comment._id} comment={comment} onDelete={handleDelete} onUpdate={handleUpdate} />
+        ))}
       </Comment.Group>
+      <Form>
+        <Input fluid name='content' placeholder='Write a comment...' value={inputs.content} onChange={handleInputChange}
+          action={{ content: 'Post', className: 'comment-submit', onClick: handleCreate }} />
+      </Form>
     </div>
   );
 }

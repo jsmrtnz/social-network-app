@@ -1,19 +1,18 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Card, Image, Icon, Button, Container, Dropdown, Input, Form } from 'semantic-ui-react';
+import { Card, Image, Icon, Button, Container, Dropdown } from 'semantic-ui-react';
 import useForm from '../hooks/useForm';
 import { AuthContext } from '../state/auth-context';
 import { CommentList } from './index';
 import { _arrayBufferToUrl, _timeAgo } from '../utils/helpers';
 
 function Post(props) {
-  const auth = useContext(AuthContext);
   const [options, setOptions] = useState({ 
     liked: false, 
-    content: 'View comments',
     collapsed: true
   });
+  const auth = useContext(AuthContext);
   const inputRef = useRef(null);
   const { post } = props;
   const setMetadata = () => {
@@ -30,7 +29,6 @@ function Post(props) {
   const handleViewComments = () => {
     setOptions({ ...options, 
       collapsed: !options.collapsed, 
-      content: options.content === 'View comments' ? 'Hide comments' : 'View comments' 
     });
     document.activeElement.blur();
   }
@@ -58,7 +56,7 @@ function Post(props) {
       console.log(e);
     }
   }
-  const handleInputUpdate = () => {
+  const enableEditPost = () => {
     inputRef.current.classList.remove("disabled");
     inputRef.current.parentElement.classList.remove("no-content");
     inputRef.current.focus();
@@ -74,7 +72,7 @@ function Post(props) {
           {({userId}) => ( userId === post.owner._id &&
             <Dropdown icon='ellipsis vertical' direction='left'>
               <Dropdown.Menu>
-                <Dropdown.Item text='Edit' onClick={handleInputUpdate} />
+                <Dropdown.Item text='Edit' onClick={enableEditPost} />
                 <Dropdown.Item text='Delete' onClick={handleDeletePost} />
               </Dropdown.Menu>
             </Dropdown>
@@ -124,19 +122,11 @@ function Post(props) {
                 <Icon name='thumbs up'/>Like
               </Button.Content>
             </Button>
-            <Button className='action' onClick={handleViewComments} animated='vertical'>
-              <Button.Content hidden>3 comments</Button.Content>
-              <Button.Content visible>
-                <Icon name='comments'/>{options.content}
-              </Button.Content>
-            </Button>
+            <Button className='action' onClick={handleViewComments}>Comments</Button>
           </Button.Group>
         </Container>
         <Card.Content className='contrast'>
-          <CommentList collapsed={options.collapsed} />
-          <Form>
-            <Input fluid action={{ content: 'Post', className: 'comment' }} placeholder='Write a comment...' />
-          </Form>
+          <CommentList collapsed={options.collapsed} post={post} />
         </Card.Content>
       </Card>
     </div>

@@ -1,4 +1,5 @@
 import CommentList from './CommentList';
+import MyComment from './Comment';
 import FindFriends from './FindFriends';
 import Friends from './Friends';
 import UserList from './UserList.component';
@@ -20,6 +21,7 @@ import Navbar from './Navbar.component';
 
 export { 
   CommentList,
+  MyComment,
   FindFriends,
   Friends,
   UserList,

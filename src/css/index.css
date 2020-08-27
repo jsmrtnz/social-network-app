@@ -6,7 +6,7 @@
   --color-pri: #333;
   --color-sec: #777;
   --color-thi: #ddd;
-  --color-a: #1e70bf;
+  --color-a: #245b8f;
   --nav-size: 60px;
   --border: 1px solid #474a4d;
   --border-radius: 3px;
@@ -304,8 +304,8 @@ textarea {
   top: 15px;
   right: 15px;
 }
-.ui.card>.content>.header {
-  display: inline;
+.ui.card>.content>a.header {
+  color: var(--color-a);
 }
 .m-14 {
   margin-bottom: 14px;
@@ -327,8 +327,8 @@ textarea {
 }
 .post .button.action.toggle.active,
 .post .button.action.toggle.active:hover {
-  background-color: var(--bg) !important;
-  color: var(--text-color) !important;
+  background-color: var(--bg-comm) !important;
+  color: var(--bg) !important;
 }
 .post .card>.contrast {
   background-color: var(--bg-comm);
@@ -339,7 +339,9 @@ textarea {
 .disabled {
   pointer-events: none;
 }
+.comment-content,
 .post-content {
+  background-color: inherit;
   width: 100%;
   border: none;
 }
@@ -347,15 +349,19 @@ textarea {
   background-color: lightskyblue !important;
 }
 .image.floated.bg-avatar {
-  border-radius: 50%;
+  border-radius: .25rem;
   margin-bottom: 0;
-  margin-right: 0.6em;
+  margin-right: 0.6rem;
 }
-.ui.button.comment {
+.ui.button {
+  color: rgba(0, 0, 0, 0.3);
+  padding: .5em 1em;
+}
+.ui.button.comment-submit {
   background: #fff;
 }
 .ui.form input[type=text],
-.ui.input>.input.comment {
+.ui.input>.input.comment-submit {
   border: none;
 }
 .users .ui.card {
@@ -395,7 +401,7 @@ textarea {
 }
 .profile .picture {
   position: absolute;
-  top: 150px;
+  top: 6px;
   right: 6px;
 }
 .profile .picture .icon:before {
@@ -415,4 +421,41 @@ textarea {
   display: none;
   height: 0px;
   width: 0px;
+}
+.ui.comments,
+.ui.comments .comment {
+  margin: 0;
+  padding: 0;
+}
+.ui.comments .comment:not(:last-child) {
+  border-bottom: 1px solid var(--bg-main);
+}
+.ui.comments .comment .avatar {
+  margin: 0;
+  width: 2.35em;
+}
+.ui.comments .comment>.avatar~.content {
+  margin-left: 2.8em;
+}
+.ui.comments .comment .author {
+  color: var(--color-a);
+  font-weight: 500;
+}
+.ui.comments .comment .metadata {
+  font-size: .8em;
+}
+.ui.comments .comment .metadata .button {
+  background: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1em;
+  color: var(--color-a);
+  font-weight: normal;
+}
+.ui.comments .comment .metadata .button:first-child {
+  margin-left: 5px;
+}
+.ui.comments .comment .text {
+  margin: 0 0 0.4em;
+  font-size: .9em;
 }

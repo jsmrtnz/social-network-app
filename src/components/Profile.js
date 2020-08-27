@@ -15,7 +15,7 @@ class Profile extends React.Component {
     this.updateProfile = this.updateProfile.bind(this);
   }
   updateProfile = (profile) => {
-    this.setState({ ...this.state, profile });
+    this.setState({ profile });
   }
   fetchProfile = async () => {
     try {

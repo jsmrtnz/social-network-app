@@ -19,21 +19,21 @@ class PostListData extends React.Component {
     this.setState({ postsArray });
   }
   handleSubmitPost = (data) => {
-    this.setState(prevState => ({
-      ...prevState.postsArray.unshift(data)
-    }))
+    const newPostsArray = this.state.postsArray.unshift(data);
+    this.setState({ ...newPostsArray })
   }
   handleDeletePost = (id) => {
-    this.setState(prevState => ({
-      postsArray: prevState.postsArray.filter(post => post._id !== id )
-    }));
+    const newPostsArray = this.state.postsArray.filter(post => post._id !== id )
+    this.setState({ postsArray: newPostsArray });
   }
   handleUpdatePost = (id, content) => {
-    let post = this.state.postsArray.find(post => post._id === id);
-    if(post) post.content = content;
-    this.setState(prevState => ({
-      postsArray: prevState.postsArray
-    }));
+    const newPostsArray = this.state.postsArray.map((post) => {
+      if (post._id === id) {
+        return { ...post, content };
+      }
+      return post;
+    }); 
+    this.setState({ postsArray: newPostsArray })
   }
   handleLike = (id, userId) => {
     let post = this.state.postsArray.find(post => post._id === id);
