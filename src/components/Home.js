@@ -25,19 +25,6 @@ class Home extends React.Component {
       console.log(e);
     }
   }
-  // fetchPosts = async (callback) => {
-  //   try {
-  //     let data = [];
-  //     const response = await axios.get('/timeline');
-  //     for (const post of response.data) {
-  //       let user = await axios.get(`/user/meta?id=${post.owner}`)
-  //       data.push({...post, ...{owner: user.data}})
-  //     }
-  //     callback(data);
-  //   } catch(e) {
-  //     console.log(e);
-  //   }
-  // }
   componentDidMount(){
     this.fetchFriendRequests();
     this.fetchUsers();
@@ -53,7 +40,6 @@ class Home extends React.Component {
     return (
       <Grid centered>
         <Grid.Column width={8}>
-        {/* onFetch={this.fetchPosts} */}
           <PostListData 
             user={user} match={this.props.match} 
             render={({ ...props }) => <PostList {...props} />} />

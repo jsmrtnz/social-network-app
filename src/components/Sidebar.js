@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Card } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
-import { FriendRequest, Footer, UserList } from './index';
+import { FriendRequest, UserList } from './index';
 
 function SideBar(props) {
   const { user, users } = props;
@@ -40,7 +40,6 @@ function SideBar(props) {
         <UserList profile={user} users={users} ref={refsArray} imageSize={'mini'} action={"Add friend"}
             onClick={(id, index) => handleAddFriend(id, index)} />
       </Card>
-      <Footer />
     </div>
   );
 }

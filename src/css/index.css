@@ -14,7 +14,7 @@
 body {
   background: var(--bg);
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   line-height: 13px;
 }
 ul {
@@ -43,21 +43,45 @@ a {
   margin: 0;
 }
 footer {
-  color: var(--color-sec);
+  width: 80%;
   margin: 0 auto;
+  padding: 1em 0 1em;
+  color: var(--color-pri);
   font-size: 12px;
-  text-align: left;
+  text-align: center;
 }
-/* Top Navigation Bar */
 .navbar {
   background-color: var(--bg);
   padding: 0;
   border-bottom: var(--border);
 }
-.ui.menu .item {
-  color: var(--color-sec);
-  box-sizing: border-box;
+
+.navbar .right.menu .ui.dropdown {
+  display: flex;
+  align-items: center;
+  padding: .85714286em 1.14285714em;
   max-height: 45px !important;
+  color: white;
+}
+.navbar .right.menu .ui.dropdown .menu {
+  top: 90%;
+  -webkit-box-shadow: 0 4px 4px rgba(0,0,0,.5);
+  box-shadow: 0 4px 4px rgba(0,0,0,.5);
+}
+.navbar .right.menu .ui.dropdown {
+  line-height: 15px;
+}
+.navbar .right.menu .ui.dropdown:hover {
+  color: var(--text-color) !important;
+}
+.navbar .right.menu .ui.dropdown .menu>.item:hover {
+  background: var(--bg-comm) !important;  
+}
+
+.ui.menu .item {
+  color: white;
+  box-sizing: border-box;
+  max-height: 38px !important;
 }
 .ui.menu .item>i.icon {
   margin: 0;
@@ -65,22 +89,25 @@ footer {
 .ui.menu .item>a {
   vertical-align: middle;
 }
-.ui.menu.pointing.secondary {
+.ui.menu.secondary {
   width: 80%;
   margin: 0 auto;
 }
-.ui.menu.pointing.secondary .active.item {
+.ui.menu.secondary .active.item {
   font-weight: normal;
 }
-.ui.menu.pointing.secondary a.header.item {
+.ui.menu.secondary a.header.item {
   color: white !important;
 }
-.ui.menu.pointing.secondary a.header.item:hover {
+.ui.menu.secondary a.header.item:hover,
+.ui.menu.secondary a.item:hover {
   color: var(--text-color) !important;
+  background: rgba(0,0,0,.9) !important;
 }
-.ui.menu.pointing.secondary a.item:hover {
-  color: white;
+.ui.menu .right.menu .dropdown:last-chil .menu {
+  right: 30%;
 }
+
 .flex-container {
   display: flex;
   flex-direction: column;
@@ -247,7 +274,6 @@ textarea {
   height: 40px;
   border: none;
   border-bottom: 1px solid var(--color-thi);
-  font-family: Arial, Helvetica, sans-serif;
   resize: none;
 }
 .post-inputs {
@@ -305,10 +331,14 @@ textarea {
   right: 15px;
 }
 .ui.card>.content>a.header {
+  display: inline;
   color: var(--color-a);
 }
 .m-14 {
   margin-bottom: 14px;
+}
+.post .ui.dropdown .menu>.item:hover {
+  background: var(--bg-comm);
 }
 .post .ui.card>.content {
   padding: 1em 1em 0.5em 1em;
@@ -364,6 +394,7 @@ textarea {
 .ui.input>.input.comment-submit {
   border: none;
 }
+.settings .ui.card,
 .users .ui.card {
   width: 100%;
   margin: 0 auto;
@@ -458,4 +489,40 @@ textarea {
 .ui.comments .comment .text {
   margin: 0 0 0.4em;
   font-size: .9em;
+}
+.settings .profile select,
+.settings .profile input {
+  font-size: 16px;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: var(--border-radius);
+  line-height: 24px;
+  padding: 4px 10px;
+  color: #4A5456; 
+}
+.settings .profile .page-title {
+  font-size: 48px;
+  font-weight: 900;
+  padding: 0 0 .5em;
+  margin: 0;
+}
+.settings .profile .form-label {
+  font-size: 14px;
+  font-weight: 700;
+  padding: 0 0 .5em;
+}
+.settings .profile .form-input {
+  width: 100%;
+  margin: 0 0 14px;
+}
+.settings .profile .save {
+  background-color: #000;
+  float: right;
+  padding: 12px 10px;
+  margin: 8px 0;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+  width: 40%;
+  color: white;
 }

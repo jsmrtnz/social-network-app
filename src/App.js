@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Route, BrowserRouter, Switch, Redirect, Link } from 'react-router-dom';
-import { Navbar, Home, Login, Signup, Profile, FindFriends, Settings, PrivateRoute } from './components/index';
+import { Navbar, Home, Login, Signup, Profile, FindFriends, Settings, PrivateRoute, Footer } from './components/index';
 import { AuthContext } from './state/auth-context';
 
 const initialState = {
@@ -20,7 +20,6 @@ const initialState = {
   },
   token: '',
   users: [],
-  activeItem: 'home'
 }
 
 class App extends React.Component {
@@ -32,10 +31,8 @@ class App extends React.Component {
     this.handleResetState = this.handleResetState.bind(this);
     this.handleUsers = this.handleUsers.bind(this);
     this.handleRequests = this.handleRequests.bind(this);
-    this.handleItemClick = this.handleItemClick.bind(this);
     this.updateUser = this.updateUser.bind(this);
   }
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
   handleResetState = () => {
     const keys = Object.keys(this.state);
     const stateReset = keys.reduce((accumulator, value) => ({ ...accumulator, [value]: undefined }), {});
@@ -77,13 +74,13 @@ class App extends React.Component {
     })();
   }
   render() {
-    const { auth, user, users, activeItem } = this.state;
+    const { auth, user, users } = this.state;
     return (
       <BrowserRouter>
         <AuthContext.Provider value={this.state.auth}>
           <div className="main">
             { auth.loggedIn && 
-              <Navbar user={user} activeItem={activeItem} onLogout={this.handleLogOut} onItemClick={this.handleItemClick}/>
+              <Navbar user={user} onLogout={this.handleLogOut}/>
             }
             <div className="main-content">
               <Switch>
@@ -97,7 +94,7 @@ class App extends React.Component {
                   users={users} onUpdateUsers={this.handleUsers} onUpdateRequests={this.handleRequests} />
                 <PrivateRoute path="/user/:id" component={Profile} onUpdateUser={this.updateUser} />
                 <PrivateRoute path="/findfriends" component={FindFriends} user={user} />
-                <PrivateRoute path="/settings" component={Settings} user={user} />
+                <PrivateRoute path="/settings" component={Settings} user={user} onSubmit={this.updateUser} />
                 <Route path="*" >
                   <div>
                     <p>Page not found!</p>
@@ -106,6 +103,7 @@ class App extends React.Component {
                 </Route>
               </Switch>
             </div>
+            <Footer />
           </div>
         </AuthContext.Provider>
       </BrowserRouter>

@@ -70,7 +70,7 @@ function Post(props) {
       <Card fluid>
         <AuthContext.Consumer>
           {({userId}) => ( userId === post.owner._id &&
-            <Dropdown icon='ellipsis vertical' direction='left'>
+            <Dropdown icon='ellipsis vertical' direction='left' selectOnBlur={false}>
               <Dropdown.Menu>
                 <Dropdown.Item text='Edit' onClick={enableEditPost} />
                 <Dropdown.Item text='Delete' onClick={handleDeletePost} />

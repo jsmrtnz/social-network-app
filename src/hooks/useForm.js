@@ -6,7 +6,6 @@ const useForm = (initialValues, callback) => {
     if(event) {
       event.preventDefault();
       callback();
-      clearInputs();
     }
   }
   const handleInputChange = (event) => {
@@ -17,10 +16,11 @@ const useForm = (initialValues, callback) => {
       case 'post':
         value = event.target.files[0];
         break;
-      case 'birthday': {
-        value = new Date(event.target.value + 'T00:00');
-        break;
-      }
+      // case 'birthday': {
+      //   value = new Date(event.target.value + 'T00:00:00.000-07:00');
+      //   console.log(value);
+      //   break;
+      // }
       default:
         value = event.target.value;
     }

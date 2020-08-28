@@ -5,7 +5,6 @@ import { Card, Image, Icon } from 'semantic-ui-react';
 import { _arrayBufferToUrl, getAge } from '../utils/helpers';
 import { AuthContext } from '../state/auth-context';
 import useForm from '../hooks/useForm';
-import { Footer } from './index';
 
 function ProfileCard(props) {
   const [clicked, setClicked] = useState(false);
@@ -60,7 +59,6 @@ function ProfileCard(props) {
           </Link>
         </Card.Content>
       </Card>
-      <Footer/>
     </React.Fragment>
   );
 }
