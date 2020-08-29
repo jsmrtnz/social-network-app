@@ -97,6 +97,9 @@ class PostListData extends React.Component {
       default:
         throw new Error(`Unhandled path: ${this.props.match.path}`)
     }
+    if (this.props.user.avatar !== prevProps.user.avatar) {
+      this.fetchPosts();
+    }
   }
   render(){
     return this.props.render({

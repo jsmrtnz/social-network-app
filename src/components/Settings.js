@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Grid, Card } from 'semantic-ui-react';
+import { Grid, Card, Message } from 'semantic-ui-react';
 import useForm from '../hooks/useForm';
 
 function Settings(props) {
   const { user } = props;
   const [data, setData] = useState(user);
+  const [message, setMessage] = useState({ text: '', visible: false, status: '' });
   useEffect(() => {
     setData(user);
   }, [user]);
@@ -13,9 +14,13 @@ function Settings(props) {
     try {
       const response = await axios.patch('/profile', inputs);
       props.onSubmit(response.data);
+      setMessage({ visible: true, status: 'success', text: 'Your profile was saved successfully!' });
     } catch(e) {
-      console.log(e);
+      setMessage({ visible: true, status: 'error', text: 'There was some errors with your submission!' });
     }
+  }
+  const handleDismiss = () => {
+    setMessage({ ...message, visible: false });
   }
   const {inputs, handleInputChange, handleSubmit} = useForm({
     firstname: data.firstname, 
@@ -31,6 +36,9 @@ function Settings(props) {
           <Card.Content>
             <form onSubmit={handleSubmit} className="profile">
               <h1 className="page-title">Edit Profile</h1>
+              {message.visible &&
+                <Message className={message.status} header={message.text} onDismiss={handleDismiss} />
+              }
               <div className="form-label">First name</div>
               <input className="form-input" type="text" name="firstname" 
                   value={inputs.firstname} onChange={handleInputChange} required/>

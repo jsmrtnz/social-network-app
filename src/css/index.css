@@ -45,7 +45,7 @@ a {
 footer {
   width: 80%;
   margin: 0 auto;
-  padding: 1em 0 1em;
+  padding: 1em 0 1.5em;
   color: var(--color-pri);
   font-size: 12px;
   text-align: center;
@@ -456,7 +456,9 @@ textarea {
 .ui.comments,
 .ui.comments .comment {
   margin: 0;
-  padding: 0;
+}
+.ui.comments .comment {
+  padding: .2em 0 0;
 }
 .ui.comments .comment:not(:last-child) {
   border-bottom: 1px solid var(--bg-main);
@@ -516,13 +518,17 @@ textarea {
   margin: 0 0 14px;
 }
 .settings .profile .save {
-  background-color: #000;
+  background-color: var(--text-color);
   float: right;
   padding: 12px 10px;
   margin: 8px 0;
   border-radius: var(--border-radius);
   border: none;
   cursor: pointer;
-  width: 40%;
-  color: white;
+  width: 25%;
+  color: var(--color-pri);
+}
+.settings .profile .save:hover {
+  background-color: #000;
+  color: var(--text-color); 
 }
